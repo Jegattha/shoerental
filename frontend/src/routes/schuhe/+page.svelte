@@ -2,7 +2,7 @@
   import axios from "axios";
   import { page } from "$app/stores";
   import { onMount } from "svelte";
-  import { jwt_token } from "../../store";
+  import { jwt_token, user } from "../../store";
 
   const api_root = $page.url.origin;
 

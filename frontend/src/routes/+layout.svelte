@@ -31,6 +31,11 @@
           <a class="nav-link" href="/schuhe">Schuhe</a>
         </li>
       {/if}
+      {#if $isAuthenticated}
+          <li class="nav-item">
+            <a class="nav-link" href="/account">Account</a>
+          </li>
+        {/if}
     </ul>
     <div class="d-flex">
       {#if $isAuthenticated}
