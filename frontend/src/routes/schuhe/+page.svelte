@@ -247,7 +247,7 @@ function validateForm() {
   }
 
 </script>
-
+{#if $user.user_roles && $user.user_roles.length > 0}
 <h1 class="mt-3">Schuhe erstellen</h1>
 <form class="mb-5">
   {#if fehlermeldung}
@@ -356,6 +356,7 @@ function validateForm() {
     Update Speichern
   </button>
 </form>
+{/if}
 
 <h1>Alle Schuhe</h1>
 <select bind:value={filterType} class="form-select">
