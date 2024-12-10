@@ -1,2 +1,0 @@
-import{s as r,n}from"../chunks/scheduler.BnCmeTFW.js";import{S as l,i,e as c,c as m,l as p,g as f,d}from"../chunks/index.Benk83Nw.js";function u(s){let t,a="Vermieter";return{c(){t=c("h1"),t.textContent=a},l(e){t=m(e,"H1",{"data-svelte-h":!0}),p(t)!=="svelte-1535fcp"&&(t.textContent=a)},m(e,o){f(e,t,o)},p:n,i:n,o:n,d(e){e&&d(t)}}}class x extends l{constructor(t){super(),i(this,t,null,u,r,{})}}export{x as component};
-//# sourceMappingURL=5.BsAYbhnH.js.map
