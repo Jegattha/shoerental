@@ -2,6 +2,7 @@
   import axios from "axios";
   import { page } from "$app/stores";
   import { onMount } from "svelte";
+  import { jwt_token, user } from "../../store";
 
   const api_root = $page.url.origin;
 
@@ -62,7 +63,7 @@
     var config = {
       method: "get",
       url: api_root + "/api/schuhe",
-      headers: {},
+      headers: {Authorization: "Bearer "+$jwt_token},
     };
 //jobs = schuhen, job = schuhe
     axios(config)
@@ -109,7 +110,7 @@ function validateForm() {
     var config = {
       method: "delete",
       url: `${api_root}/api/schuhe/delete/${schuheId}`,
-      headers: {},
+      headers: {Authorization: "Bearer "+$jwt_token},
     };
 
     axios(config)
@@ -133,6 +134,7 @@ function validateForm() {
         url: `${api_root}/api/schuhe?vermieterId=${vermieterId}`,
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer "+$jwt_token,
         },
         data: schuhe,
       };
@@ -157,6 +159,7 @@ function validateForm() {
         url: `${api_root}/api/schuhe/update/${schuhe.schuheId}`,
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer "+$jwt_token,
           
         },
         data: schuhe,
@@ -182,6 +185,7 @@ function validateForm() {
         url: `${api_root}/api/schuhe/update/${schuhe.schuheId}`,
         headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer "+$jwt_token,
       },
         data: schuhe,
       };
@@ -243,7 +247,7 @@ function validateForm() {
   }
 
 </script>
-
+{#if $user.user_roles && $user.user_roles.length > 0}
 <h1 class="mt-3">Schuhe erstellen</h1>
 <form class="mb-5">
   {#if fehlermeldung}
@@ -352,6 +356,7 @@ function validateForm() {
     Update Speichern
   </button>
 </form>
+{/if}
 
 <h1>Alle Schuhe</h1>
 <select bind:value={filterType} class="form-select">

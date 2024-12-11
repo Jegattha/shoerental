@@ -23,6 +23,7 @@ import ch.zhaw.shoerental.model.MieterSchuheAggregationDTO;
 import ch.zhaw.shoerental.model.Vermieter;
 import ch.zhaw.shoerental.repository.SchuheRepository;
 import ch.zhaw.shoerental.service.VermieterService;
+import ch.zhaw.shoerental.service.RoleService; 
 
 @RestController
 @RequestMapping("/api")
@@ -34,13 +35,20 @@ public class SchuheController {
     @Autowired
     private VermieterService vermieterService;
 
-
+    @Autowired
+    RoleService roleService;
 
 
     @PostMapping("/schuhe")
    
      public ResponseEntity<Schuhe> createSchuhe(
+
              @RequestBody SchuheCreateDTO sDTO, @RequestParam String vermieterId) {
+
+                if (!roleService.userHasRole("admin")) {
+                    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                    }
+
          Vermieter vermieter = vermieterService.getVermieterById(vermieterId);
      
          if (vermieter == null) {
