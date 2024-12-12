@@ -1,10 +1,12 @@
 package ch.zhaw.shoerental.controller;
 
 
-import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 //import org.springframework.data.domain.Page;
 //import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.zhaw.shoerental.model.Mieter;
 import ch.zhaw.shoerental.model.MieterCreateDTO;
@@ -37,21 +40,13 @@ public class MieterController {
 
 
             @GetMapping("/mieter")
-  public ResponseEntity<List<Mieter>> getAllMieter() {
- List<Mieter> allMieters = mieterRepository.findAll();
- return new ResponseEntity<>(allMieters, HttpStatus.OK);
-}
-
-
-            /*public ResponseEntity<Page<Mieter>> getAllMieter(
+public ResponseEntity<Page<Mieter>> getAllMieter(
      @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
      @RequestParam(required = false, defaultValue = "2") Integer pageSize) {
  Page<Mieter> allFree = mieterRepository.findAll(PageRequest.of(pageNumber - 1, pageSize));
  return new ResponseEntity<>(allFree, HttpStatus.OK);
 } 
-}
 
-*/
 
 @GetMapping("/mieter/{id}")
 public ResponseEntity<Mieter> getMieterById(@PathVariable String id) {
