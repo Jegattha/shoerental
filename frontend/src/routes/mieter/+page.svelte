@@ -1,5 +1,5 @@
 <script>
-     import axios from "axios";
+    import axios from "axios";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
   
@@ -15,16 +15,16 @@
     };
   
     onMount(() => {
-      getVermieters();
+      getMieters();
     });
   
 
     function getMieters() {
       var config = {
         method: "get",
-        url: api_root + "/api/mieter" + query,
+        url: api_root + "/api/mieter",
         headers: {},
-    };
+      };
   
     axios(config)
         .then(function (response) {

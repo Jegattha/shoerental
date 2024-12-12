@@ -2,6 +2,7 @@
     import axios from "axios";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
+    import { jwt_token } from "../../store";
   
     const api_root = $page.url.origin;
   
@@ -19,12 +20,12 @@
       var config = {
         method: "get",
         url: api_root + "/api/vermieter",
-        headers: {},
+        headers: {Authorization: "Bearer "+$jwt_token},
       };
   
       axios(config)
         .then(function (response) {
-          companies = response.data;
+          vermieters = response.data;
         })
         .catch(function (error) {
           alert("Could not get vermieters");
@@ -38,6 +39,7 @@
         url: api_root + "/api/vermieter",
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer "+$jwt_token,
         },
         data: vermieter,
       };

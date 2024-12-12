@@ -31,6 +31,11 @@
           <a class="nav-link" href="/schuhe">Schuhe</a>
         </li>
       {/if}
+      {#if $isAuthenticated && $user.user_roles && $user.user_roles.includes("admin") }
+        <li class="nav-item">
+          <a class="nav-link" href="/mieter">Mieter</a>
+        </li>
+      {/if}
       {#if $isAuthenticated}
           <li class="nav-item">
             <a class="nav-link" href="/account">Account</a>
