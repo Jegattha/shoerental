@@ -2,7 +2,8 @@
     import axios from "axios";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
-  
+    import { jwt_token } from "../../store";
+
     const api_root = $page.url.origin;
     
 
@@ -23,7 +24,7 @@
       var config = {
         method: "get",
         url: api_root + "/api/mieter",
-        headers: {},
+        headers: {Authorization: "Bearer "+$jwt_token},
       };
   
     axios(config)
@@ -45,6 +46,7 @@
         url: api_root + "/api/mieter",
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer "+$jwt_token,
         },
         data: mieter,
       };
@@ -65,6 +67,7 @@
         url: `${api_root}/api/mieter/delete/${mieterId}`,
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer "+$jwt_token,
         },
       };
   
