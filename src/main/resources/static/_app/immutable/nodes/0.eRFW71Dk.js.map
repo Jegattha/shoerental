@@ -1,1 +1,0 @@
-{"version":3,"file":"0.eRFW71Dk.js","sources":["../../../../../../src/routes/+layout.ts"],"sourcesContent":["export const ssr = false;\nexport const prerender = true; "],"names":["ssr","prerender"],"mappings":"gJAAO,MAAMA,EAAM,GACNC,EAAY"}
