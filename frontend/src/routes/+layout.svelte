@@ -20,6 +20,15 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              aria-current="page"
+              href="/schuheOpen">Schuhe</a
+            >
+          </li>
+
           {#if $isAuthenticated && $user.user_roles && $user.user_roles.includes("admin") }
           <li class="nav-item">
           <a class="nav-link" aria-current="page" href="/vermieter"
@@ -31,11 +40,31 @@
           <a class="nav-link" href="/schuhe">Schuhe</a>
         </li>
       {/if}
+
+      {#if $isAuthenticated}
+      <li class="nav-item">
+        <a class="nav-link" href="/frauenschuh">Frauenschuhe</a>
+      </li>
+      {/if}
+
+      {#if $isAuthenticated}
+      <li class="nav-item">
+        <a class="nav-link" href="/maennerschuh">Männerschuhe</a>
+      </li>
+      {/if}
+
       {#if $isAuthenticated && $user.user_roles && $user.user_roles.includes("admin") }
         <li class="nav-item">
           <a class="nav-link" href="/mieter">Mieter</a>
         </li>
       {/if}
+
+      {#if $isAuthenticated &&  $user.user_roles&&  $user.user_roles.includes("admin")}
+      <li class="nav-item">
+        <a class="nav-link" href="/vermieteteSchuhe">Vermietete Schuhe</a>
+      </li>
+      {/if}
+
       {#if $isAuthenticated}
           <li class="nav-item">
             <a class="nav-link" href="/account">Account</a>
