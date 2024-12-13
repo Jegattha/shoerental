@@ -2,7 +2,7 @@
     import axios from "axios";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
-    import { jwt_token} from "../../store";
+    import { jwt_token, user} from "../../store";
   
     const api_root = $page.url.origin;
 
@@ -52,7 +52,7 @@
         return;
       }
   
-      const mieterId = "6755b757e7e72851f4f7217d"; 
+     const mieterId = $user.id;
       const data = {
         schuheId,
         mieterId,
@@ -160,7 +160,7 @@
       const selectedSchuhen = filteredSchuhen.filter(schuhe => schuhe.mieten);
   
       if (selectedSchuhen.length > 0) {
-          const mieterId = "6755b757e7e72851f4f7217d"; 
+          const mieterId = $user.id;
           const schuheId = selectedSchuhen.map(schuhe => schuhe.schuheId);
   
   
@@ -254,6 +254,7 @@
     return bildpfad || '';
   }
   </script>
+
   <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   </head>

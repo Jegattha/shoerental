@@ -41,13 +41,13 @@
         </li>
       {/if}
 
-      {#if $isAuthenticated}
+      {#if $isAuthenticated && (!$user.user_roles || (!$user.user_roles.includes("admin") && !$user.user_roles.includes("vermieter")))}
       <li class="nav-item">
         <a class="nav-link" href="/frauenschuh">Frauenschuhe</a>
       </li>
       {/if}
 
-      {#if $isAuthenticated}
+      {#if $isAuthenticated && (!$user.user_roles || (!$user.user_roles.includes("admin") && !$user.user_roles.includes("vermieter")))}
       <li class="nav-item">
         <a class="nav-link" href="/maennerschuh">Männerschuhe</a>
       </li>
