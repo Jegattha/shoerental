@@ -70,6 +70,14 @@
             <a class="nav-link" href="/account">Account</a>
           </li>
         {/if}
+        {#if $isAuthenticated}
+        <li class="nav-item">
+          <a class="nav-link" href="/verfizierung">Verifizierung</a>
+        </li>
+        {/if}
+        <li>
+          <a class="nav-link" href="/about">About</a>
+        </li>
     </ul>
     <div class="d-flex">
       {#if $isAuthenticated}
