@@ -14,8 +14,12 @@ public class VermieterService {
     @Autowired
     private VermieterRepository vermieterRepository;
 
-    public Vermieter getVermieterById(String vermieterId) {
-        Optional<Vermieter> vermieterOpt = vermieterRepository.findById(vermieterId);
-        return vermieterOpt.orElse(null);
+    public Optional<String> getEmailById(String vermieterId) {
+        Optional<Vermieter> vermieter = vermieterRepository.findById(vermieterId);
+        return vermieter.map(Vermieter::getEmail);
     }
+    public Vermieter getVermieterById(String vermieterId) {
+        return vermieterRepository.findById(vermieterId).orElse(null);
+    }
+
 }
