@@ -55,7 +55,29 @@ getMieters();
     }
     //getMieters();
   
-   
+    function validateEmailAndcreateMieter(){
+ var config = {
+ method: "get",
+ url: "https://disify.com/api/email/" + mieter.email
+ };
+ axios(config)
+ .then(function (response) {
+ console.log("Validated email "+mieter.email);
+ console.log(response.data);
+ if(response.data.format && !response.data.disposable
+ && response.data.dns
+ ){
+  createMieters();
+ }else{
+ alert("Email "+mieter.email+" is not valid.");
+ }
+ })
+ .catch(function (error) {
+ alert("Could not validate email");
+ console.log(error);
+ });
+}
+
   
     function createMieters() {
       var config = {
@@ -125,7 +147,7 @@ getMieters();
         />
       </div>
     </div>
-    <button type="button" class="btn btn-primary" on:click={createMieters}
+    <button type="button" class="btn btn-primary" on:click={validateEmailAndcreateMieter}
       >Submit</button
     >
   </form>
