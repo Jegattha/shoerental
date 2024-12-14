@@ -52,7 +52,7 @@
         return;
       }
   
-     const mieterId = $user.id;
+     const mieterId = "6755b757e7e72851f4f7217d";
       const data = {
         schuheId,
         mieterId,
@@ -160,7 +160,7 @@
       const selectedSchuhen = filteredSchuhen.filter(schuhe => schuhe.mieten);
   
       if (selectedSchuhen.length > 0) {
-          const mieterId = $user.id;
+          const mieterId = "6755b757e7e72851f4f7217d";
           const schuheId = selectedSchuhen.map(schuhe => schuhe.schuheId);
   
   
