@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ch.zhaw.shoerental.model.Vermieter;
 import ch.zhaw.shoerental.model.VermieterCreateDTO;
 import ch.zhaw.shoerental.repository.VermieterRepository;
-import ch.zhaw.shoerental.service.MailValidatorService;
+
 
 
 
@@ -36,8 +36,7 @@ public class VermieterController {
     @Autowired
     VermieterRepository vermieterRepository;
 
-@Autowired
- MailValidatorService mailValidatorService;
+
 
 
             @GetMapping("/vermieter")

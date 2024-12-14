@@ -18,8 +18,10 @@ import ch.zhaw.shoerental.model.Schuhe;
 import ch.zhaw.shoerental.model.SchuheStateChangeDTO;
 import ch.zhaw.shoerental.model.Mail;
 import ch.zhaw.shoerental.service.SchuheService;
+import ch.zhaw.shoerental.service.VermieterService;
 import ch.zhaw.shoerental.service.MailService;
 
+import ch.zhaw.shoerental.service.MieterService;
 
 
 @RestController
@@ -29,98 +31,123 @@ public class ServiceController {
     @Autowired
     SchuheService schuheService;
 
+    @Autowired
+    MieterService mieterService;
+
+    @Autowired
+    VermieterService vermieterService;
+
     @PutMapping("/assignSchuhe")
-    public ResponseEntity<Schuhe> assignSchuhe(@RequestBody SchuheStateChangeDTO changeS){
+    public ResponseEntity<Schuhe> assignSchuhe(@RequestBody SchuheStateChangeDTO changeS) {
         String mieterId = changeS.getMieterId();
         String schuheId = changeS.getSchuheId();
         Optional<Schuhe> schuhe = schuheService.assignSchuhe(schuheId, mieterId);
-        if(schuhe.isPresent()){
-            Mail mail = new Mail();
-            mail.setTo("tharsana18@outlook.de");
-            mail.setSubject("Schuhe Assigned");
-            mail.setMessage("Mieter have been assigned to the Schuhe with ID: " + schuheId);
-            MailService mailService = new MailService();
-            boolean isMailSent = mailService.sendMail(mail);
-
-            if (isMailSent) {
-                System.out.println("Email sent successfully!");
-            } else {
-                System.out.println("Failed to send the email. Check logs for details.");
+        
+        if (schuhe.isPresent()) {
+            Schuhe assignedSchuhe = schuhe.get();
+    
+            // Dynamische E-Mail-Adressen abrufen
+            String mieterEmail = mieterService.getEmail(); // Mieter-E-Mail
+            Optional<String> optionalVermieterEmail = vermieterService.getEmailById(assignedSchuhe.getVermieterId());
+    
+            // E-Mail an den Mieter senden
+            if (mieterEmail != null && !mieterEmail.isEmpty()) {
+                sendMieterEmail(mieterEmail, schuheId);
             }
-
-            return new ResponseEntity<>(schuhe.get(), HttpStatus.OK);
+    
+            // E-Mail an den Vermieter senden
+            sendVermieterEmail(optionalVermieterEmail, schuheId, mieterId, assignedSchuhe.getMietdauerVon(), assignedSchuhe.getMietdauerBis());
+    
+            return new ResponseEntity<>(assignedSchuhe, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
+    
     @PostMapping("/availableSchuhe")
     public ResponseEntity<Schuhe> availableSchuhe(@RequestBody AvailabeSchuheDTO changeA) {
         Optional<Schuhe> schuhe = schuheService.availableSchuhe(changeA.getSchuheId());
-        if(schuhe.isPresent()){
+        if (schuhe.isPresent()) {
             Schuhe s = schuhe.get();
-            Mail mail = new Mail();
-            mail.setTo("tharsana18@outlook.de");
-            mail.setSubject("Schuhe zurückgegeben");
-            mail.setMessage("Du hast die Schuhe-ID: " + s.getSchuheId() +" erfolgreich zurückgesendet.");
-            MailService mailService = new MailService();
-            boolean isMailSent = mailService.sendMail(mail);
-
-            if (isMailSent) {
-                System.out.println("Email sent successfully!");
-            } else {
-                System.out.println("Failed to send the email. Check logs for details.");
+            String vermieterEmail = vermieterService.getEmailById(s.getVermieterId()).orElse(null);
+    
+            if (vermieterEmail != null && !vermieterEmail.isEmpty()) {
+                Mail mail = new Mail();
+                mail.setTo(vermieterEmail);
+                mail.setSubject("Schuhe zurückgegeben");
+                mail.setMessage("Die Schuhe mit der ID " + s.getSchuheId() + " wurden erfolgreich zurückgegeben.");
+                MailService mailService = new MailService();
+                boolean isMailSent = mailService.sendMail(mail);
+    
+                if (isMailSent) {
+                    System.out.println("Email sent successfully!");
+                } else {
+                    System.out.println("Failed to send the email. Check logs for details.");
+                }
             }
-
-            return new ResponseEntity<>(schuhe.get(), HttpStatus.OK);
+    
+            return new ResponseEntity<>(s, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-        
-        @PostMapping("/mietSchuhe")
-        public ResponseEntity<Schuhe> mietSchuhe(@RequestBody SchuheStateChangeDTO changeS) {
-            String mieterId = changeS.getMieterId();
-            String schuheId = changeS.getSchuheId();
-            Date mietdauerVon = changeS.getMietdauerVon();
-            Date mietdauerBis = changeS.getMietdauerBis();
-        
-            Optional<Schuhe> schuhe = schuheService.mietSchuhe(schuheId, mieterId, mietdauerVon, mietdauerBis);
-        
-            if (schuhe.isPresent()) {
-                sendMieterEmail(schuheId, mietdauerBis);
-                sendVermieterEmail(schuheId, mieterId, mietdauerVon, mietdauerBis);
-                return new ResponseEntity<>(schuhe.get(), HttpStatus.OK);
+    
+    @PostMapping("/mietSchuhe")
+    public ResponseEntity<Schuhe> mietSchuhe(@RequestBody SchuheStateChangeDTO changeS) {
+        String mieterId = changeS.getMieterId();
+        String schuheId = changeS.getSchuheId();
+        Date mietdauerVon = changeS.getMietdauerVon();
+        Date mietdauerBis = changeS.getMietdauerBis();
+    
+        Optional<Schuhe> schuhe = schuheService.mietSchuhe(schuheId, mieterId, mietdauerVon, mietdauerBis);
+    
+        if (schuhe.isPresent()) {
+            Schuhe rentedSchuhe = schuhe.get();
+    
+            // Dynamische E-Mail-Adressen abrufen
+            String mieterEmail = mieterService.getEmail();
+            Optional<String> optionalVermieterEmail = vermieterService.getEmailById(rentedSchuhe.getVermieterId());
+    
+            // E-Mails senden
+            if (mieterEmail != null && !mieterEmail.isEmpty()) {
+                sendMieterEmail(mieterEmail, schuheId);
             }
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            sendVermieterEmail(optionalVermieterEmail, schuheId, mieterId, mietdauerVon, mietdauerBis);
+    
+            return new ResponseEntity<>(rentedSchuhe, HttpStatus.OK);
         }
-        private void sendMieterEmail(String schuheId, Date mietdauerBis) {
-            Mail mieterMail = new Mail();
-            mieterMail.setTo("tharsana18@outlook.de");
-            mieterMail.setSubject("Schuhe gemietet");
-            mieterMail.setMessage("Du hast die Schuhe-ID: " + schuheId + " bis zum " + mietdauerBis +
-                    " gemietet. Falls du Fragen hast, kannst du uns jederzeit kontaktieren");
-            MailService mailService = new MailService();
-            boolean isMailSent = mailService.sendMail(mieterMail);
-        
-            if (isMailSent) {
-                System.out.println("Email to Mieter sent successfully!");
-            } else {
-                System.out.println("Failed to send the email to Mieter. Check logs for details.");
-            }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    
+    private void sendMieterEmail(String mieterEmail, String schuheId) {
+        Mail mieterMail = new Mail();
+        mieterMail.setTo(mieterEmail);
+        mieterMail.setSubject("Schuhe gemietet");
+        mieterMail.setMessage("Du hast die Schuhe mit der ID " + schuheId + " erfolgreich gemietet.");
+        MailService mailService = new MailService();
+        boolean isMailSent = mailService.sendMail(mieterMail);
+    
+        if (isMailSent) {
+            System.out.println("Email to Mieter sent successfully!");
+        } else {
+            System.out.println("Failed to send the email to Mieter. Check logs for details.");
         }
-        
-        private void sendVermieterEmail(String schuheId, String mieterId, Date mietdauerVon, Date mietdauerBis) {
+    }
+    
+    private void sendVermieterEmail(Optional<String> optionalVermieterEmail, String schuheId, String mieterId, Date mietdauerVon, Date mietdauerBis) {
+        optionalVermieterEmail.ifPresent(vermieterEmail -> {
             Mail vermieterMail = new Mail();
-            vermieterMail.setTo("tharsana.jegatheeswaran@gmail.com");
+            vermieterMail.setTo(vermieterEmail);
             vermieterMail.setSubject("Schuhe vermietet");
-            vermieterMail.setMessage("Die Schuhe-ID: " + schuheId + " wurde an Mieter-ID: " + mieterId +
-                    " vermietet. Mietdauer von " + mietdauerVon + " bis " + mietdauerBis);
+            vermieterMail.setMessage("Die Schuhe mit der ID " + schuheId + " wurden an den Mieter mit der ID " + mieterId + 
+                " vermietet. Mietdauer: Von " + mietdauerVon + " bis " + mietdauerBis + ".");
+    
             MailService mailService = new MailService();
             boolean isMailSent = mailService.sendMail(vermieterMail);
-        
+    
             if (isMailSent) {
                 System.out.println("Email to Vermieter sent successfully!");
             } else {
                 System.out.println("Failed to send the email to Vermieter. Check logs for details.");
             }
-        }
-}
+        });
+    }
+}    

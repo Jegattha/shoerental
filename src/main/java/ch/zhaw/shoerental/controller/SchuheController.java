@@ -45,10 +45,6 @@ public class SchuheController {
 
              @RequestBody SchuheCreateDTO sDTO, @RequestParam String vermieterId) {
 
-                if (!roleService.userHasRole("admin")) {
-                    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-                    }
-
          Vermieter vermieter = vermieterService.getVermieterById(vermieterId);
      
          if (vermieter == null) {
