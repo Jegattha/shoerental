@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ch.zhaw.shoerental.model.Vermieter;
 import ch.zhaw.shoerental.model.VermieterCreateDTO;
 import ch.zhaw.shoerental.repository.VermieterRepository;
+import ch.zhaw.shoerental.service.MailValidatorService;
 
 
 
@@ -36,6 +37,8 @@ public class VermieterController {
     @Autowired
     VermieterRepository vermieterRepository;
 
+    @Autowired
+    MailValidatorService mailValidatorService;
 
 
 
@@ -66,8 +69,11 @@ public class VermieterController {
         @RequestBody VermieterCreateDTO vDTO){
             Vermieter vDAO = new Vermieter(vDTO.getName(),vDTO.getEmail(), vDTO.getTelefonnummer(), vDTO.getAdresse(), vDTO.getPlz(), vDTO.getOrt());
             Vermieter v = vermieterRepository.save(vDAO);
-            return new ResponseEntity<>(v, HttpStatus.CREATED);
+            if(mailValidatorService.validateEmail(v.getEmail()).isDns() && mailValidatorService.validateEmail(v.getEmail()).isFormat() && !mailValidatorService.validateEmail(v.getEmail()).isDisposable()){
+                return new ResponseEntity<>(v, HttpStatus.CREATED);
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         }
-
 }
-

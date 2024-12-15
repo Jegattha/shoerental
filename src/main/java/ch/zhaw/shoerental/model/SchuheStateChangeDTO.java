@@ -15,3 +15,4 @@ public class SchuheStateChangeDTO {
     Date mietdauerVon;
     Date mietdauerBis;
 }
+

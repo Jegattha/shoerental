@@ -34,10 +34,10 @@ public class Vermieter {
 
     public Vermieter(@NonNull String name, 
     @NonNull String email, 
-    @NonNull String telefonnummer, 
-    @NonNull String adresse, 
-    @NonNull String plz, 
-    @NonNull String ort) {
+     String telefonnummer, 
+     String adresse, 
+     String plz, 
+     String ort) {
 this.name = name;
 this.email = email;
 this.telefonnummer = telefonnummer;

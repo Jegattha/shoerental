@@ -138,6 +138,3 @@ public class SchuheController {
             }
 
         }
-
-
-    

@@ -37,6 +37,9 @@ public class ServiceController {
     @Autowired
     VermieterService vermieterService;
 
+    @Autowired
+    MailService mailService;
+
     @PutMapping("/assignSchuhe")
     public ResponseEntity<Schuhe> assignSchuhe(@RequestBody SchuheStateChangeDTO changeS) {
         String mieterId = changeS.getMieterId();
@@ -122,7 +125,6 @@ public class ServiceController {
         mieterMail.setTo(mieterEmail);
         mieterMail.setSubject("Schuhe gemietet");
         mieterMail.setMessage("Du hast die Schuhe mit der ID " + schuheId + " erfolgreich gemietet.");
-        MailService mailService = new MailService();
         boolean isMailSent = mailService.sendMail(mieterMail);
     
         if (isMailSent) {
@@ -133,14 +135,13 @@ public class ServiceController {
     }
     
     private void sendVermieterEmail(Optional<String> optionalVermieterEmail, String schuheId, String mieterId, Date mietdauerVon, Date mietdauerBis) {
-        optionalVermieterEmail.ifPresent(vermieterEmail -> {
+        if (optionalVermieterEmail.isPresent()) {
+            String vermieterEmail = optionalVermieterEmail.get();
             Mail vermieterMail = new Mail();
             vermieterMail.setTo(vermieterEmail);
             vermieterMail.setSubject("Schuhe vermietet");
             vermieterMail.setMessage("Die Schuhe mit der ID " + schuheId + " wurden an den Mieter mit der ID " + mieterId + 
                 " vermietet. Mietdauer: Von " + mietdauerVon + " bis " + mietdauerBis + ".");
-    
-            MailService mailService = new MailService();
             boolean isMailSent = mailService.sendMail(vermieterMail);
     
             if (isMailSent) {
@@ -148,6 +149,26 @@ public class ServiceController {
             } else {
                 System.out.println("Failed to send the email to Vermieter. Check logs for details.");
             }
-        });
+        
+        }
     }
-}    
+    @PostMapping("/verifizierung/sendMail")
+    public ResponseEntity<String> sendVerificationMail(@RequestBody Mail mail) {
+        boolean success = mailService.sendMail(mail);
+        if (success) {
+            return ResponseEntity.ok("E-Mail erfolgreich gesendet!");
+        } else {
+            return ResponseEntity.status(500).body("Fehler beim Senden der E-Mail.");
+        }
+    } 
+
+@PostMapping("/about/sendMail")
+public ResponseEntity<String> sendAboutMail(@RequestBody Mail mail) {
+    boolean success = mailService.sendMail(mail);
+    if (success) {
+        return ResponseEntity.ok("E-Mail erfolgreich gesendet!");
+    } else {
+        return ResponseEntity.status(500).body("Fehler beim Senden der E-Mail.");
+    }
+}
+}
