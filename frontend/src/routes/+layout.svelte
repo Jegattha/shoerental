@@ -35,7 +35,7 @@
           >Vermieter</a>
           </li>
           {/if} 
-      {#if $isAuthenticated}
+          {#if $isAuthenticated && $user.user_roles && ($user.user_roles.includes("admin") || $user.user_roles.includes("vermieter")) }
         <li class="nav-item">
           <a class="nav-link" href="/schuhe">Schuhe</a>
         </li>
@@ -70,9 +70,9 @@
             <a class="nav-link" href="/account">Account</a>
           </li>
         {/if}
-        {#if $isAuthenticated}
+        {#if $isAuthenticated && (!$user.user_roles || (!$user.user_roles.includes("admin")))}
         <li class="nav-item">
-          <a class="nav-link" href="/verfizierung">Verifizierung</a>
+          <a class="nav-link" href="/verifizierung">Verifizierung</a>
         </li>
         {/if}
         <li>
