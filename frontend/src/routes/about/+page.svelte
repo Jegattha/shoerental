@@ -21,7 +21,6 @@
             method: "POST",
             headers: { 
               "Content-Type": "application/json",
-              Authorization: "Bearer "+$jwt_token
             },
             body: JSON.stringify(mailData),
           });
@@ -53,13 +52,16 @@
       <style>
         /* Rahmen und Stil für das Kontaktformular */
         .footer {
-    background-color: #4dc1ff ; 
-    color: #ffffff; 
-    padding: 10px 0;
+    background-color: #4dc1ff;
+    color: #ffffff;
+    padding: 20px 0;
     position: fixed;
     bottom: 0;
-    width: 50vw; 
-        }
+    left: 0;
+    width: auto;
+    text-align: center; /* Zentriert den Text */
+    z-index: 100; /* Fußzeile wird über anderen Elementen angezeigt */
+}
 
         form {
           max-width: 300px;
@@ -141,7 +143,7 @@
 
       
       
-    {#if $isAuthenticated}
+  
     <h3>Kontakt</h3>
       <form on:submit|preventDefault={handleSubmit}>
         <label for="name">Name:</label>
@@ -158,6 +160,6 @@
       
         <button type="submit">Senden</button>
       </form>
-    {/if}
+
       <img src="/images/dog.png" alt="Doggo" width="400" />
       
