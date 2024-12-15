@@ -12,6 +12,7 @@ let defaultPageSize = 4;
   
     let vermieters = [];
     let vermieter = {
+      vermieterId: null,
       name: null,
       email: null,
     };
@@ -50,25 +51,69 @@ getVermieters();
           console.log(error);
         });
     }
+
+    function validateEmailAndcreateVermieter(){
+ var config = {
+ method: "get",
+ url: "https://disify.com/api/email/" + vermieter.email
+ };
+ axios(config)
+ .then(function (response) {
+ console.log("Validated email "+vermieter.email);
+ console.log(response.data);
+ if(response.data.format && !response.data.disposable
+ && response.data.dns
+ ){
+  createVermieters();
+ }else{
+ alert("Email "+vermieter.email+" is not valid.");
+ }
+ })
+ .catch(function (error) {
+ alert("Could not validate email");
+ console.log(error);
+ });
+}
+
   
-    function createVermieter() {
+    function createVermieters() { 
+            var config = {
+                method: "post",
+                url: api_root + "/api/vermieter",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer "+$jwt_token,
+                },
+                data: vermieter,
+            };
+
+            axios(config)
+                .then(function (response) {
+                    alert("Vermieter created");
+                    getVermieters();
+                })
+                .catch(function (error) {
+                    alert("Could not create Vermieter");
+                    console.log(error);
+                });
+        }
+        function deleteVermieter(vermieterId) {
       var config = {
-        method: "post",
-        url: api_root + "/api/vermieter",
+        method: "delete",
+        url: `${api_root}/api/vermieter/delete/${vermieterId}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer "+$jwt_token,
         },
-        data: vermieter,
       };
   
       axios(config)
         .then(function (response) {
-          alert("Vermieter created");
+          alert("Vermieter deleted");
           getVermieters();
         })
         .catch(function (error) {
-          alert("Could not create Vermieter");
+          alert("Could not delete Vermieter");
           console.log(error);
         });
     }
@@ -98,7 +143,7 @@ getVermieters();
         />
       </div>
     </div>
-    <button type="button" class="btn btn-primary" on:click={createVermieter}
+    <button type="button" class="btn btn-primary" on:click={createVermieters}
       >Submit</button
     >
   </form>

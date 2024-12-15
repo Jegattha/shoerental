@@ -52,13 +52,14 @@
         return;
       }
   
-     const mieterId = "6755b757e7e72851f4f7217d";
-      const data = {
-        schuheId,
-        mieterId,
-        mietdauerVon,
-        mietdauerBis,
-      };
+      const mieterId = "675db76bb8c9d3496ce577c1";
+    const data = {
+      schuheId,
+      mieterId,
+      mietdauerVon,
+      mietdauerBis,
+    };
+
   
       var config = {
         method: "post",
@@ -160,7 +161,7 @@
       const selectedSchuhen = filteredSchuhen.filter(schuhe => schuhe.mieten);
   
       if (selectedSchuhen.length > 0) {
-          const mieterId = "6755b757e7e72851f4f7217d";
+          const mieterId = "675db76bb8c9d3496ce577c1";
           const schuheId = selectedSchuhen.map(schuhe => schuhe.schuheId);
   
   
@@ -349,7 +350,7 @@
         {#if schuhe.schuheType === "FRAUENSCHUH"}
           <tr>
             <td>{schuhe.marke}</td>
-            <td>{schuhe.detailSchuheBeschreibung}</td>
+            <td>{schuhe.schuheBeschreibung}</td>
             <td>{schuhe.preis}</td>
             <td>{schuhe.groesse}</td>
             <td>{schuhe.schuheType}</td>

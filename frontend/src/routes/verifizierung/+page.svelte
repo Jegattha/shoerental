@@ -6,15 +6,14 @@
     
         let name = "";
         let email = "";
-        let adresse = "";
-        let telefonnummer = "";
         let rolle = "";
+       
       
         const handleSubmit = async () => {
         const mailData = {
           to: "shoerental1@gmail.com", // Ihre Ziel-E-Mail-Adresse
           subject: "Neue Verifizierungsanfrage",
-          message: `Name: ${name}\nE-Mail: ${email}\nAdresse: ${adresse}\nTelefonnummer: ${telefonnummer}\nRolle: ${rolle}`,
+          message: `Name: ${name}\nE-Mail: ${email}\nRolle: ${rolle}`,
         };
     
         try {
@@ -22,7 +21,7 @@
             method: "POST",
             headers: { 
               "Content-Type": "application/json",
-              Authorization: "Bearer "+$jwt_token
+              Authorization: "Bearer "+$jwt_token,
             },
             body: JSON.stringify(mailData),
           });
@@ -103,7 +102,7 @@
       
       <h3>Verifizierung</h3>
     
-    {#if $isAuthenticated}
+      {#if $isAuthenticated}
       <form on:submit|preventDefault={handleSubmit}>
         <label for="name">Name:</label>
         <input id="name" bind:value={name} type="text" placeholder="Ihr Name" required>
@@ -111,12 +110,6 @@
         <label for="email">E-Mail:</label>
         <input id="email" bind:value={email} type="email" placeholder="Ihre E-Mail-Adresse" required>
       
-        <label for="subject">Adresse:</label>
-        <input id="subject" bind:value={adresse} type="number" placeholder="Adresse" required>
-    
-        <label for="subject">Telefonnummer:</label>
-        <input id="subject" bind:value={telefonnummer} type="number" placeholder="Telefonnummer" required>
-    
         <label for="rolle">Rolle:</label>
             <select id="rolle" bind:value={rolle} required>
                 <option value="" disabled selected>Wählen Sie Ihre Rolle</option>
@@ -126,7 +119,7 @@
       
         <button type="submit">Senden</button>
       </form>
-    {/if}
+      {/if}
       
       <img src="/images/dog.png" alt="Doggo" width="400" />
       

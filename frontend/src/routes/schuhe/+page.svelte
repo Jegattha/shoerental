@@ -15,7 +15,6 @@
     groesse: null,
     schuheFarbe: null,
     schuheBeschreibung: null,
-    detailSchuheBeschreibung: null,
     vermieterId: null,
   };
 
@@ -211,7 +210,6 @@ function validateForm() {
       groesse: null,
       schuheFarbe: null,
       schuheBeschreibung: null,
-      detailSchuheBeschreibung: null,
       vermieterId: null,
     };
   }
@@ -395,12 +393,10 @@ function validateForm() {
           <td>{schuhe.preis}</td>
           <td>{schuhe.groesse}</td>
           <td>{schuhe.schuheFarbe}</td>
-
+          <td>{schuhe.schuheBeschreibung}</td>
 
          <!-- <td>{schuhe.schuheBeschreibung}</td> (isch en KOMMENTAR!!) -->
 
-
-          <td>{schuhe.detailSchuheBeschreibung}</td>
           <td>
             {#if isSchuheVermietet(schuhe)}
               <span class="badge bg-secondary">Aktuell vermietet</span>
