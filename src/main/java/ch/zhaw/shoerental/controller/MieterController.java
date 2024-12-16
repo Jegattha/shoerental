@@ -115,6 +115,8 @@ public ResponseEntity<Mieter> assignToMe(@AuthenticationPrincipal Jwt jwt) {
     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 }
 
+
+
     
 }
 
