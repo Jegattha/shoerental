@@ -6,6 +6,8 @@
 
   const api_root = $page.url.origin;
 
+ 
+
   let schuhen = [];
   let schuhe = {
     schuheId: null,
@@ -18,9 +20,13 @@
     vermieterId: null,
   };
 
+
+
   onMount(() => {
     getSchuhen();
   });
+
+  
 
 
   let fehlermeldung = null;
@@ -83,7 +89,8 @@ function validateForm() {
       schuhe.schuheType &&
       schuhe.groesse &&
       schuhe.schuheFarbe &&
-      schuhe.schuheBeschreibung
+      schuhe.schuheBeschreibung &&
+      schuhe.vermieterId
     ) {
       return true;
     } else {
@@ -126,7 +133,7 @@ function validateForm() {
  
 
     function createSchuhe() {
-   let vermieterId = "674f10b5c618e3eb815354df"; 
+   let vermieterId = "675f619ab1d05c6871b190cd"; 
     if (validateForm()) {
       var config = {
         method: "post",
@@ -152,7 +159,7 @@ function validateForm() {
 
   function updateSchuh() {
     if (validateForm()) {
-      schuhe.vermieterId = "674f10b5c618e3eb815354df";
+      schuhe.vermieterId = "675f619ab1d05c6871b190cd";
       var config = {
         method: "put",
         url: `${api_root}/api/schuhe/update/${schuhe.schuheId}`,
@@ -346,6 +353,17 @@ function validateForm() {
         type="text"
       />
     </div>
+
+    <div class="col">
+      <label class="form-label" for="vermieterId">Vermieter Id</label>
+      <input
+        bind:value={schuhe.vermieterId}
+        class="form-control"
+        id="vermieterId"
+        type="text"
+      />
+    </div>
+
   </div>
   <button type="button" class="btn btn-primary" on:click={createSchuhe}>
     Absenden
@@ -394,6 +412,7 @@ function validateForm() {
           <td>{schuhe.groesse}</td>
           <td>{schuhe.schuheFarbe}</td>
           <td>{schuhe.schuheBeschreibung}</td>
+        
 
          <!-- <td>{schuhe.schuheBeschreibung}</td> (isch en KOMMENTAR!!) -->
 
@@ -414,6 +433,9 @@ function validateForm() {
     {/each}
   </tbody>
 </table>
+
+
+
 <style>
   .frauenschuh-bild {
     width: 100%; 

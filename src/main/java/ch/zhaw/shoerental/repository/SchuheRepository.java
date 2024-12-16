@@ -5,6 +5,7 @@ import ch.zhaw.shoerental.model.MieterSchuheAggregationDTO;
 
 import java.util.List;
 
+
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -19,8 +20,6 @@ List<MieterSchuheAggregationDTO> getMieterSchuheAggregation();
 "{$group: {_id: null, totalPrices: {$sum: '$preis'}}}," +
 "{$project: {_id: 0, totalPrices: 1}}")
 Double getGesamtpreisVerfuegbareSchuhe();
-
-List<Schuhe> findByVermieterId(String vermieterId);
 
 
 }

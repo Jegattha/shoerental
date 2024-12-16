@@ -1,6 +1,7 @@
 package ch.zhaw.shoerental.controller;
 
 
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 //import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +25,7 @@ import ch.zhaw.shoerental.model.Vermieter;
 import ch.zhaw.shoerental.model.VermieterCreateDTO;
 import ch.zhaw.shoerental.repository.VermieterRepository;
 import ch.zhaw.shoerental.service.MailValidatorService;
-
+import ch.zhaw.shoerental.service.SchuheService;
 
 
 
@@ -40,7 +42,8 @@ public class VermieterController {
     @Autowired
     MailValidatorService mailValidatorService;
 
-
+  @Autowired
+    SchuheService schuheService;
 
             @GetMapping("/vermieter")
   public ResponseEntity<Page<Vermieter>> getAllVermieter(
@@ -62,6 +65,17 @@ public class VermieterController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @DeleteMapping("/vermieter/delete/{vermieterId}")
+public ResponseEntity<Void> deleteVermieter(@PathVariable String vermieterId) {
+    if (vermieterRepository.existsById(vermieterId)) {
+        vermieterRepository.deleteById(vermieterId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    } else {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+}
+      
 
 
         @PostMapping("/vermieter")

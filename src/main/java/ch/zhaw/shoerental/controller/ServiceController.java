@@ -162,6 +162,8 @@ public class ServiceController {
         }
     } 
 
+
+
 @PostMapping("/about/sendMail")
 public ResponseEntity<String> sendAboutMail(@RequestBody Mail mail) {
     boolean success = mailService.sendMail(mail);
@@ -172,3 +174,5 @@ public ResponseEntity<String> sendAboutMail(@RequestBody Mail mail) {
     }
 }
 }
+
+  

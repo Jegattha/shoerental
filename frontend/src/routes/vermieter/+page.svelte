@@ -143,7 +143,7 @@ getVermieters();
         />
       </div>
     </div>
-    <button type="button" class="btn btn-primary" on:click={createVermieters}
+    <button type="button" class="btn btn-primary" on:click={validateEmailAndcreateVermieter}
       >Submit</button
     >
   </form>
@@ -154,7 +154,7 @@ getVermieters();
       <tr>
         <th scope="col">Name</th>
         <th scope="col">E-Mail</th>
-        <th scope="col">ID</th>
+        <th scope="col">Aktion</th>
       </tr>
     </thead>
     <tbody>
@@ -162,7 +162,15 @@ getVermieters();
         <tr>
           <td>{vermieter.name}</td>
           <td>{vermieter.email}</td>
-          <td>{vermieter.id}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-danger"
+              on:click={() => deleteVermieter(vermieter.vermieterId)}
+            >
+              Delete
+            </button>
+          </td>
         </tr>
       {/each}
     </tbody>

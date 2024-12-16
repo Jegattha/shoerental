@@ -12,6 +12,7 @@ public class SchuheCreateDTO {
     private String schuheFarbe;
     private String schuheBeschreibung;
     private String vermieterId;
+   
     
 }
 

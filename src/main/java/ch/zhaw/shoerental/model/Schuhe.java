@@ -52,7 +52,9 @@ public class Schuhe {
                   @NonNull String groesse, 
                   @NonNull String schuheFarbe, 
                   @NonNull String schuheBeschreibung,
-                  @NonNull String vermieterId) {
+                  String vermieterId
+                
+                   ) {
         this.marke = marke;
         this.preis = preis;
         this.schuheType = schuheType;
@@ -60,6 +62,8 @@ public class Schuhe {
         this.schuheFarbe = schuheFarbe;
         this.schuheBeschreibung = schuheBeschreibung;
         this.vermieterId = vermieterId;
+      
+
     }
 
  

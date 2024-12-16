@@ -132,9 +132,10 @@ public class SchuheController {
 
             @DeleteMapping("/schuheTest")
            
-            public ResponseEntity<String> deleteAllJobs() {
+            public ResponseEntity<String> deleteAllSchuhen() {
             schuheRepository.deleteAll();
             return ResponseEntity.status(HttpStatus.OK).body("DELETED");
             }
 
         }
+

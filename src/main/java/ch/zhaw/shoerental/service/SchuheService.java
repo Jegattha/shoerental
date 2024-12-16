@@ -23,6 +23,8 @@ public class SchuheService {
     @Autowired
     MieterRepository mieterRepository;
 
+
+
     public Optional<Schuhe> assignSchuhe(String schuheId, String mieterId){
         Optional<Schuhe> schuheToAssign = schuheRepository.findById(schuheId);
         if(schuheToAssign.isPresent()){
