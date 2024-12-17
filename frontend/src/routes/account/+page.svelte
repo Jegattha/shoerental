@@ -75,7 +75,7 @@ function formatiereDatum(datum) {
 <!-- Gemietete Schuhe für Kunden -->
 {#if $isAuthenticated && (!$user.user_roles || (!$user.user_roles.includes("admin") && !$user.user_roles.includes("vermieter"))) && schuhen.length > 0}
   <div class="rented-clothing">
-      <h2>Gemietete Schuhe</h2>
+      <h2>Gemietete Schuhe</h2>   
       <ul>
           {#each schuhen as schuhe}
               {#if schuhe.schuheState === "VERMIETET"}
