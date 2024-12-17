@@ -15,7 +15,7 @@
   let selectedBrand = "all"; 
 
 
-  function getSchuhen() {
+  function getSchuhen() {    
     var config = {
       method: "get",
       url: api_root + "/api/schuhe",
