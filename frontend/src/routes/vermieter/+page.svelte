@@ -182,7 +182,7 @@ getVermieters();
     <a
     class="page-link"
     class:active={currentPage == i + 1}
-    href={"/vermieter?page=" + (i + 1)}>{i + 1}
+    href={"/vermieter?page=" + (i + 1)}>{i + 1}  
     </a>
     </li>
     {/each}
