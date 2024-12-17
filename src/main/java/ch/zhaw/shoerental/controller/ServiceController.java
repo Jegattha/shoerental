@@ -120,7 +120,7 @@ public class ServiceController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     
-    private void sendMieterEmail(String mieterEmail, String schuheId) {
+    private void sendMieterEmail(String mieterEmail, String schuheId) {    
         Mail mieterMail = new Mail();
         mieterMail.setTo(mieterEmail);
         mieterMail.setSubject("Schuhe gemietet");
