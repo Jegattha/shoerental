@@ -8,7 +8,7 @@ import ch.zhaw.shoerental.model.SchuheAssignDTO;
 
 public class SchuheAssignDTOTest {
     
-
+  
         @Test
     public void testConstructorWithParameters() {
      

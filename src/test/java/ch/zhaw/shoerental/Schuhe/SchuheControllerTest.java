@@ -53,7 +53,7 @@ public class SchuheControllerTest {
     @InjectMocks
     private SchuheController schuheController;
 
-    @Mock
+    @Mock  
 private VermieterService vermieterService;
     
     

@@ -62,7 +62,7 @@ public class SchuheControllerTestIntegration {
                 .andExpect(jsonPath("$.mieterId").value("Mieter123"));
     }
 
-    @Test
+    @Test   
     void testAvailableSchuhe() throws Exception {
         // Schuhe erstellen und speichern
         Schuhe schuhe = new Schuhe("Adidas", 80.0, SchuheType.MAENNERSCHUH, "41", "Weiß", "Bequeme Freizeitschuhe", "Vermieter456");
