@@ -52,7 +52,7 @@ public class Schuhe {
                   @NonNull String groesse, 
                   @NonNull String schuheFarbe, 
                   @NonNull String schuheBeschreibung,
-                  String vermieterId
+                  String vermieterId   
                 
                    ) {
         this.marke = marke;

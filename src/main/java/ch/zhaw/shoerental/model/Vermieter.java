@@ -35,7 +35,7 @@ public class Vermieter {
     public Vermieter(@NonNull String name, 
     @NonNull String email, 
      String telefonnummer, 
-     String adresse, 
+     String adresse,   
      String plz, 
      String ort) {
 this.name = name;
