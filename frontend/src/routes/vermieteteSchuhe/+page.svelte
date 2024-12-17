@@ -137,7 +137,7 @@
                                 schuheAvailable(schuhe.schuheId);
                             }}
                         >
-                            Freigeben
+                            Freigeben      
                         </button>
                     {/if}
                 </td>
