@@ -335,7 +335,7 @@ function validateForm() {
         class="form-control"
         id="schuheFarbe">
       
-        <option value="blau">Blau</option>
+        <option value="blau">Blau</option>    
         <option value="gruen">Grün</option>
         <option value="schwarz">Schwarz</option>
         <option value="weiss">Weiss</option>
