@@ -57,7 +57,7 @@ public class SchuheService {
                 return Optional.of(schuhe);
             }
         }
-        return Optional.empty();
+        return Optional.empty();    
     }
     
 public Optional<Schuhe> mietSchuhe(String schuheId, String mieterId, Date mietdauerVon, Date mietdauerBis) {
