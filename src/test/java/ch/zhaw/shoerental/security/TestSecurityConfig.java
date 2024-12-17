@@ -12,7 +12,7 @@ public class TestSecurityConfig {
  // inspired by https://stackoverflow.com/questions/61500578/howto-mock-jwt-authentication-in-a-spring-boot-unit-test
  static final String AUTH0_TOKEN = "token";
  static final String SUB = "sub";
- static final String AUTH0ID = "sms|12345678";
+ static final String AUTH0ID = "sms|12345678";   
  @Bean
  public JwtDecoder jwtDecoder() {
  return new JwtDecoder() {
