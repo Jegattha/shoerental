@@ -360,7 +360,7 @@
                 <i class="fas fa-circle" style="color: green;"></i>
               {:else if schuhe.schuheState === "VERMIETET"}
                 <i class="fas fa-circle" style="color: red;"></i>
-              {/if}
+              {/if}       
             </td>
             <td>{schuhe.schuheFarbe}</td>
             <td>
