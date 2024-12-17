@@ -87,7 +87,7 @@ public class SchuheController {
             }
 
             @DeleteMapping("/schuhe/delete/{schuheId}")
-            public ResponseEntity<Void> deleteKleidungbyId(@PathVariable String schuheId) {
+            public ResponseEntity<Void> deleteSchuhebyId(@PathVariable String schuheId) {
                 Optional<Schuhe> schuheOpt = schuheRepository.findById(schuheId);
             
                 if (schuheOpt.isPresent()) {

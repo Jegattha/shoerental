@@ -4,15 +4,16 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.NonNull;
-
+import lombok.Setter;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
 @NoArgsConstructor
-
+@AllArgsConstructor
 @Getter
-
+@Setter
 @Document("vermieter")
 public class Vermieter {
 
