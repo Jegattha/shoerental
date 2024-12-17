@@ -9,7 +9,7 @@ import ch.zhaw.shoerental.model.AvailabeSchuheDTO;
 
 public class AvailableSchuheDTOTest {
 
-    @Test
+    @Test  
     void testSetGetSchuheId() {
         String schuheId = "123";
         AvailabeSchuheDTO availabeSchuheDTO = new AvailabeSchuheDTO();

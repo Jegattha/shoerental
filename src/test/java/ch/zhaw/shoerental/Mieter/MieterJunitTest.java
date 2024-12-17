@@ -13,7 +13,7 @@ public class MieterJunitTest {
     
     private Mieter mieter;
 
-    @BeforeEach
+    @BeforeEach  
     void setUp() {
         mieter = new Mieter("1", "John Doe", "john.doe@gmail.com","123456789", "Musterstrasse","8000", "Basel");
     }
