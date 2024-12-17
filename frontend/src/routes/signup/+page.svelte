@@ -91,7 +91,7 @@ let selectedUserType = "";
                 <div class="invalid-feedback">Please choose a password.</div>
               </div>
               <div class="mb-3">
-                <label for="userType" class="form-label">User Type</label>
+                <label for="userType" class="form-label">User Type</label>   
                 <select
                 bind:value={selectedUserType}
                 class="form-select"
