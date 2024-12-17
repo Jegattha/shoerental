@@ -172,7 +172,7 @@ getMieters();
               class="btn btn-danger"
               on:click={() => deleteMieter(mieter.mieterId)}
             >
-              Delete
+              Delete   
             </button>
           </td>
         </tr>
