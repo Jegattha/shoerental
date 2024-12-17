@@ -48,7 +48,7 @@ private ServiceController serviceController;
         MockitoAnnotations.openMocks(this);
         
     }
-
+    
     @Test
     void testAssignSchuhe() {
         SchuheStateChangeDTO changeDTO = new SchuheStateChangeDTO();

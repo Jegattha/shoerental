@@ -135,3 +135,4 @@ public class ServiceControllerTestIntegration {
                 .andExpect(content().string("E-Mail erfolgreich gesendet!"));
     }
 }
+    

@@ -32,7 +32,7 @@ public class ServiceUnitTest {
     private SchuheService schuheService;
 
     @Test
-    public void testAssignSchuhe() {
+    public void testAssignSchuhe() {    
         // Arrange
         String schuheId = "testSchuheId";
         String mieterId = "testMieterId";
