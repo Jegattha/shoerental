@@ -414,7 +414,7 @@ function getBildpfad(schuhe) {
           </td>
         </tr>
       {/if}
-    {/each}
+    {/each}   
   </tbody>
 </table>
 <style>
