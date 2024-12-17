@@ -317,7 +317,7 @@
     <option value="desc">Höchster zuerst</option>
   </select>
   
-  <!-- Filter für Marken -->
+  <!-- Filter für Marken -->  
   <label for="brand">Marke:</label>
   <select bind:value={selectedBrand} id="brand" class="form-select" on:change={filterSchuhen}>
     <option value="all">Alle Marken</option>
