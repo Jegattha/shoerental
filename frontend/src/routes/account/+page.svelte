@@ -115,20 +115,4 @@ h1, h2 {
   margin-top: 30px;
 }
 
-.rented-clothing, .leased-clothing {
-  margin-top: 20px;
-}
-
-.rented-clothing ul, .leased-clothing ul {
-  list-style: none;
-  padding: 0;
-}
-
-.rented-clothing li, .leased-clothing li {
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 5px;
-  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-}
 </style>
