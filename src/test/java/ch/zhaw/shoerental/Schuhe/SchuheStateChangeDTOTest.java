@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import ch.zhaw.shoerental.model.SchuheStateChangeDTO;
 
 public class SchuheStateChangeDTOTest {
-
+   
     @Test
     void testNoArgsConstructor() {
         SchuheStateChangeDTO schuheStateChangeDTO = new SchuheStateChangeDTO();

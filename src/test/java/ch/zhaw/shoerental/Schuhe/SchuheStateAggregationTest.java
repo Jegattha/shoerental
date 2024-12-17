@@ -15,7 +15,7 @@ public class SchuheStateAggregationTest {
         String id = "aggregationId";
         List<String> schuheIds = Arrays.asList("schuheId1", "schuheId2");
         String count = "2";
-
+   
         SchuheStateAggregation aggregation = new SchuheStateAggregation(id, schuheIds, count);
 
         assertEquals(id, aggregation.getId());
