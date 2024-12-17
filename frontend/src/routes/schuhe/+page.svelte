@@ -424,7 +424,7 @@ function validateForm() {
                 Löschen
               </button>
               <button class="btn btn-primary" on:click={() => editSchuhe(schuhe)}>
-                Update
+                Update    
               </button>
             {/if}
           </td>
