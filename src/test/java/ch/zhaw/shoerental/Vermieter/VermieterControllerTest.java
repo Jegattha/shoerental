@@ -68,7 +68,7 @@ class VermieterControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(expectedVermieter, response.getBody());
-    }
+    }    
 
     @Test
     void testGetVermieterByIdNotFound() {
