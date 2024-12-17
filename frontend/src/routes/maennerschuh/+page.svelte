@@ -141,7 +141,7 @@ function handleDateInput(schuhe, schuheType) {
       console.log("aktuellesDatum:", aktuellesDatum);
 
       if (vonDatum < aktuellesDatum || bisDatum < aktuellesDatum || vonDatum > bisDatum) {
-       alert("Das ausgewählte Datum liegt in der Vergangenheit oder ist ungültig. Bitte wählen Sie gültige Daten.");
+       alert("Das ausgewählte Datum liegt in der Vergangenheit oder ist ungültig. Bitte wählen Sie gültige Daten.");   
         schuhe.mietdauerVon = "";
         schuhe.mietdauerBis = "";
         return;
