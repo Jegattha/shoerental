@@ -110,7 +110,7 @@
         <th scope="col">Mieter ID</th>
         <th scope="col">Name</th>
         <th scope="col">Vermietet bis</th>
-        <th scope="col">Aktion</th>
+        <th scope="col">Aktion</th>    
       </tr>
     </thead>
     <tbody>
