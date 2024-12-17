@@ -29,7 +29,7 @@
     <p>
         Herzlich willkommen bei Shoerental! Wir möchten uns herzlich bei dir bedanken, dass du ein Teil unserer wachsenden Familie geworden bist. Dein Engagement, Schuhe zu mieten statt zu kaufen, verdient besondere Anerkennung. Vielen Dank, dass du nicht nur deinen eigenen Stil findest, sondern auch dazu beiträgst, Modeabfälle zu reduzieren und einen nachhaltigen Lebensstil zu fördern. Deine ökologische Denkweise und deine bewusste Entscheidung tragen dazu bei, unsere Welt zu einem besseren Ort zu machen. Bei Shoerental erwarten dich wunderschöne Frauen- und Männerschuhe, um deinen Stil zu unterstreichen. Nochmals danke, dass du Teil unserer Familie bist – wir freuen uns darauf, gemeinsam mit dir modische und nachhaltige Wege zu erkunden!</p>
       
-    <img src="/images/vite.svg" alt="Vite Logo" />
+    <img src="/images/vite.svg" alt="Vite Logo" />        
 {:else}
     <div class="container mt-5">
         <div class="row justify-content-center">
