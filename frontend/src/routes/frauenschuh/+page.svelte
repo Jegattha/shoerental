@@ -207,7 +207,7 @@
       const bisDate = new Date(bisDatum);
       const vonDate = new Date(vonDatum);
       // @ts-ignore
-      return Math.ceil((bisDate - vonDate) / (1000 * 60 * 60 * 24));
+      return Math.ceil((bisDate - vonDate) / (1000 * 60 * 60 * 24));    
     }
   
     onMount(getSchuhen);
