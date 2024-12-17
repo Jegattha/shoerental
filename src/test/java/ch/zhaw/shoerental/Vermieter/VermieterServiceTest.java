@@ -23,7 +23,7 @@ class VermieterServiceTest {
     private VermieterService vermieterService;
 
     @Mock
-    private VermieterRepository vermieterRepository;
+    private VermieterRepository vermieterRepository;    
 
     @Test
     void testGetVermieterById() {
