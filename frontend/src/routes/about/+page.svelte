@@ -129,7 +129,7 @@ import { isAuthenticated, user } from "../../store";
       }
     </style>
     
-    <h1>About Shoerental</h1>
+    <h1>About Shoerental</h1>   
           <p>
             Bei Shoerental bieten wir Ihnen die besten Mietpreise für Damen- und Herrenschuhe. In einer Welt, in der der Kauf von Schuhe oft überflüssig ist, setzen wir auf Nachhaltigkeit und die Idee des Teilens. Warum teure Schuhe kaufen, die Sie nur selten tragen, wenn Sie sie bei uns mieten können?
           </p>

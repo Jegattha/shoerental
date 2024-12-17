@@ -100,7 +100,7 @@
         Damit sie unseren Service benutzen möchten, müssen wir Sie zuerst verfifizieren. 
       </p>
       
-      <h3>Verifizierung</h3>
+      <h3>Verifizierung</h3>   
     
       {#if $isAuthenticated}
       <form on:submit|preventDefault={handleSubmit}>
