@@ -60,6 +60,9 @@ public class SchuheService {
         return Optional.empty();    
     }
     
+
+
+    
 public Optional<Schuhe> mietSchuhe(String schuheId, String mieterId, Date mietdauerVon, Date mietdauerBis) {
     Optional<Schuhe> schuheToRent = schuheRepository.findById(schuheId);
     if (schuheToRent.isPresent()) {

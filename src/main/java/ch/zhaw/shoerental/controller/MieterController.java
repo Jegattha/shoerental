@@ -22,6 +22,7 @@ import ch.zhaw.shoerental.model.Mieter;
 import ch.zhaw.shoerental.model.MieterCreateDTO;
 import ch.zhaw.shoerental.repository.MieterRepository;
 import ch.zhaw.shoerental.service.MailValidatorService;
+import ch.zhaw.shoerental.service.RoleService;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,9 @@ public class MieterController {
 
     @Autowired
     MailValidatorService mailValidatorService;
+
+    @Autowired
+    RoleService roleService;
 
 
 
@@ -70,6 +74,11 @@ public ResponseEntity<Mieter> getMieterById(@PathVariable String id) {
  @PostMapping("/mieter")
   public ResponseEntity<Mieter> createMieter(
       @RequestBody MieterCreateDTO mDTO){
+
+        if (!roleService.userHasRole("admin") ) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
           Mieter mDAO = new Mieter(mDTO.getName(),mDTO.getEmail(), mDTO.getTelefonnummer(), mDTO.getAdresse(), mDTO.getPlz(), mDTO.getOrt());
           Mieter m = mieterRepository.save(mDAO);    
           if(mailValidatorService.validateEmail(m.getEmail()).isDns() && mailValidatorService.validateEmail(m.getEmail()).isFormat() && !mailValidatorService.validateEmail(m.getEmail()).isDisposable()){
@@ -82,6 +91,10 @@ public ResponseEntity<Mieter> getMieterById(@PathVariable String id) {
 
 @DeleteMapping("/mieter/delete/{mieterId}")
 public ResponseEntity<Void> deleteMieter(@PathVariable String mieterId) {
+    
+    if (!roleService.userHasRole("admin") ) {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
     if (mieterRepository.existsById(mieterId)) {
         mieterRepository.deleteById(mieterId);
         return new ResponseEntity<>(HttpStatus.OK);

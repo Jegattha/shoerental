@@ -25,6 +25,7 @@ import ch.zhaw.shoerental.model.Vermieter;
 import ch.zhaw.shoerental.model.VermieterCreateDTO;
 import ch.zhaw.shoerental.repository.VermieterRepository;
 import ch.zhaw.shoerental.service.MailValidatorService;
+import ch.zhaw.shoerental.service.RoleService;
 import ch.zhaw.shoerental.service.SchuheService;
 
 
@@ -44,6 +45,9 @@ public class VermieterController {
 
   @Autowired
     SchuheService schuheService;
+
+    @Autowired
+    RoleService roleService;
 
             @GetMapping("/vermieter")
   public ResponseEntity<Page<Vermieter>> getAllVermieter(
@@ -68,6 +72,11 @@ public class VermieterController {
 
     @DeleteMapping("/vermieter/delete/{vermieterId}")
 public ResponseEntity<Void> deleteVermieter(@PathVariable String vermieterId) {
+
+    if (!roleService.userHasRole("admin") ) {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
     if (vermieterRepository.existsById(vermieterId)) {
         vermieterRepository.deleteById(vermieterId);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -81,6 +90,11 @@ public ResponseEntity<Void> deleteVermieter(@PathVariable String vermieterId) {
         @PostMapping("/vermieter")
     public ResponseEntity<Vermieter> createVermieter(
         @RequestBody VermieterCreateDTO vDTO){
+
+            if (!roleService.userHasRole("admin") ) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+
             Vermieter vDAO = new Vermieter(vDTO.getName(),vDTO.getEmail(), vDTO.getTelefonnummer(), vDTO.getAdresse(), vDTO.getPlz(), vDTO.getOrt());
             Vermieter v = vermieterRepository.save(vDAO);
             if(mailValidatorService.validateEmail(v.getEmail()).isDns() && mailValidatorService.validateEmail(v.getEmail()).isFormat() && !mailValidatorService.validateEmail(v.getEmail()).isDisposable()){

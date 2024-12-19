@@ -5,12 +5,15 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.shoerental.model.AvailabeSchuheDTO;
@@ -40,7 +43,10 @@ public class ServiceController {
     @Autowired
     MailService mailService;
 
-    @PutMapping("/assignSchuhe")
+
+
+
+   @PutMapping("/assignSchuhe")
     public ResponseEntity<Schuhe> assignSchuhe(@RequestBody SchuheStateChangeDTO changeS) {
         String mieterId = changeS.getMieterId();
         String schuheId = changeS.getSchuheId();
@@ -65,34 +71,40 @@ public class ServiceController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-    
-    @PostMapping("/availableSchuhe")
+
+ @PostMapping("/availableSchuhe")
     public ResponseEntity<Schuhe> availableSchuhe(@RequestBody AvailabeSchuheDTO changeA) {
         Optional<Schuhe> schuhe = schuheService.availableSchuhe(changeA.getSchuheId());
         if (schuhe.isPresent()) {
             Schuhe s = schuhe.get();
             String vermieterEmail = vermieterService.getEmailById(s.getVermieterId()).orElse(null);
-    
+
             if (vermieterEmail != null && !vermieterEmail.isEmpty()) {
                 Mail mail = new Mail();
                 mail.setTo(vermieterEmail);
                 mail.setSubject("Schuhe zurückgegeben");
                 mail.setMessage("Die Schuhe mit der ID " + s.getSchuheId() + " wurden erfolgreich zurückgegeben.");
-                MailService mailService = new MailService();
+
                 boolean isMailSent = mailService.sendMail(mail);
-    
+
                 if (isMailSent) {
                     System.out.println("Email sent successfully!");
                 } else {
-                    System.out.println("Failed to send the email. Check logs for details.");
+                    System.err.println("Failed to send the email. Check logs for details.");
                 }
+            } else {
+                System.err.println("No email found for vermieterId: " + s.getVermieterId());
             }
-    
+
             return new ResponseEntity<>(s, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+        
     
+
+
+
     @PostMapping("/mietSchuhe")
     public ResponseEntity<Schuhe> mietSchuhe(@RequestBody SchuheStateChangeDTO changeS) {
         String mieterId = changeS.getMieterId();
