@@ -12,7 +12,7 @@
   let selectedSize = "all";
   let selectedPriceSort = "asc";
   let selectedBrand = "all"; 
-
+   
   function getSchuhen() {
     var config = {
       method: "get",
