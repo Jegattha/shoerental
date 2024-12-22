@@ -93,3 +93,10 @@
         </div>
     </div>
 {/if}
+
+<div class="image-container">
+    <img src="/images/luxuryHerrenschuhe.png" alt="Herrenschuh" width="400" />
+    <img src="/images/luxuryDamenschuhe.png" alt="Damenschuhe" width="400" />
+  </div> 
+
+  
