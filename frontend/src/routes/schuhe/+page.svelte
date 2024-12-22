@@ -14,7 +14,7 @@
     marke: null,
     preis: null,
     schuheType: null,
-    groesse: null,
+    groesse: null,  
     schuheFarbe: null,
     schuheBeschreibung: null,
     vermieterId: null,
