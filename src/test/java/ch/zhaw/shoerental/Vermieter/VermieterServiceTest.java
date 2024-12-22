@@ -35,4 +35,4 @@ class VermieterServiceTest {
         assertEquals(expectedVermieter, retrievedVermieter);
         verify(vermieterRepository, times(1)).findById(vermieterId);
     }
-}
+}   
