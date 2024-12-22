@@ -73,10 +73,7 @@ public class VermieterController {
     @DeleteMapping("/vermieter/delete/{vermieterId}")
 public ResponseEntity<Void> deleteVermieter(@PathVariable String vermieterId) {
 
-    if (!roleService.userHasRole("admin") ) {
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-    }
-
+   
     if (vermieterRepository.existsById(vermieterId)) {
         vermieterRepository.deleteById(vermieterId);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -91,9 +88,7 @@ public ResponseEntity<Void> deleteVermieter(@PathVariable String vermieterId) {
     public ResponseEntity<Vermieter> createVermieter(
         @RequestBody VermieterCreateDTO vDTO){
 
-            if (!roleService.userHasRole("admin") ) {
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
+           
 
             Vermieter vDAO = new Vermieter(vDTO.getName(),vDTO.getEmail(), vDTO.getTelefonnummer(), vDTO.getAdresse(), vDTO.getPlz(), vDTO.getOrt());
             Vermieter v = vermieterRepository.save(vDAO);

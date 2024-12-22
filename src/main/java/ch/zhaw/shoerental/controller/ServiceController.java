@@ -164,27 +164,21 @@ public class ServiceController {
         
         }
     }
-    @PostMapping("/verifizierung/sendMail")
-    public ResponseEntity<String> sendVerificationMail(@RequestBody Mail mail) {
+
+
+
+
+    @PostMapping("/about/sendMail")
+    public ResponseEntity<String> sendAboutMail(@RequestBody Mail mail) {
         boolean success = mailService.sendMail(mail);
         if (success) {
             return ResponseEntity.ok("E-Mail erfolgreich gesendet!");
         } else {
             return ResponseEntity.status(500).body("Fehler beim Senden der E-Mail.");
         }
-    } 
-
-
-
-@PostMapping("/about/sendMail")
-public ResponseEntity<String> sendAboutMail(@RequestBody Mail mail) {
-    boolean success = mailService.sendMail(mail);
-    if (success) {
-        return ResponseEntity.ok("E-Mail erfolgreich gesendet!");
-    } else {
-        return ResponseEntity.status(500).body("Fehler beim Senden der E-Mail.");
     }
-}
-}
+    
+    }
+    
 
-  
+    

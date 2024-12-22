@@ -20,15 +20,15 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
+          {#if !$isAuthenticated}
           <li class="nav-item">
             <a
               class="nav-link"
               aria-current="page"
-              href="/schuheOpen">Schuhe</a
+              href="/schuheOpen">Alle Schuhe</a
             >
           </li>
-
+{/if}
           {#if $isAuthenticated && $user.user_roles && $user.user_roles.includes("admin") }
           <li class="nav-item">
           <a class="nav-link" aria-current="page" href="/vermieter"
@@ -43,13 +43,13 @@
 
       {#if $isAuthenticated && (!$user.user_roles || (!$user.user_roles.includes("admin") && !$user.user_roles.includes("vermieter")))}
       <li class="nav-item">
-        <a class="nav-link" href="/frauenschuh">Frauenschuhe</a>
+        <a class="nav-link" href="/damenschuh">Damenschuhe</a>
       </li>
       {/if}
 
       {#if $isAuthenticated && (!$user.user_roles || (!$user.user_roles.includes("admin") && !$user.user_roles.includes("vermieter")))}
       <li class="nav-item">
-        <a class="nav-link" href="/maennerschuh">Männerschuhe</a>
+        <a class="nav-link" href="/herrenschuh">Herrenschuhe</a>
       </li>
       {/if}
 
@@ -70,11 +70,7 @@
             <a class="nav-link" href="/account">Account</a>
           </li>
         {/if}
-        {#if $isAuthenticated && (!$user.user_roles || (!$user.user_roles.includes("admin")))}
-        <li class="nav-item">
-          <a class="nav-link" href="/verifizierung">Verifizierung</a>
-        </li>
-        {/if}
+        
         <li>
           <a class="nav-link" href="/about">About</a>
         </li>

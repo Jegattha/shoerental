@@ -18,7 +18,8 @@ function signup(
   email,
   password,
   firstName = null,
-  lastName = null
+  lastName = null,
+  userType = null
 ) {
   var options = {
     method: "post",
@@ -28,6 +29,7 @@ function signup(
       email: email,
       password: password,
       connection: "Username-Password-Authentication",
+      user_metadata: {}
       // you can set any of these properties as well if needed
       // username: "johndoe", // if not provided, email will be used as username for login. if provided, username has to be validated (must not already exist)
       // given_name: "John",
@@ -37,6 +39,10 @@ function signup(
       // picture: "http://example.org/jdoe.png",
     },
   };
+
+  if (userType && userType.length > 0) {
+    options.data.user_metadata.user_type = userType;  //mieter oder vermieter
+  }
 
   if (firstName && firstName.length > 0) {
     options.data.given_name = firstName;

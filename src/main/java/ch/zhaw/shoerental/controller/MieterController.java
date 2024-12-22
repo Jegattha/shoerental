@@ -75,9 +75,7 @@ public ResponseEntity<Mieter> getMieterById(@PathVariable String id) {
   public ResponseEntity<Mieter> createMieter(
       @RequestBody MieterCreateDTO mDTO){
 
-        if (!roleService.userHasRole("admin") ) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+       
 
           Mieter mDAO = new Mieter(mDTO.getName(),mDTO.getEmail(), mDTO.getTelefonnummer(), mDTO.getAdresse(), mDTO.getPlz(), mDTO.getOrt());
           Mieter m = mieterRepository.save(mDAO);    
@@ -92,9 +90,7 @@ public ResponseEntity<Mieter> getMieterById(@PathVariable String id) {
 @DeleteMapping("/mieter/delete/{mieterId}")
 public ResponseEntity<Void> deleteMieter(@PathVariable String mieterId) {
     
-    if (!roleService.userHasRole("admin") ) {
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-    }
+   
     if (mieterRepository.existsById(mieterId)) {
         mieterRepository.deleteById(mieterId);
         return new ResponseEntity<>(HttpStatus.OK);

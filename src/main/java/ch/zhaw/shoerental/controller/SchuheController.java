@@ -45,9 +45,7 @@ public class SchuheController {
      public ResponseEntity<Schuhe> createSchuhe(
 
              @RequestBody SchuheCreateDTO sDTO, @RequestParam String vermieterId) {
-                if (!roleService.userHasRole("admin") || !roleService.userHasRole("vermieter")) {
-                    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-                }
+                
 
          Vermieter vermieter = vermieterService.getVermieterById(vermieterId);
      
@@ -91,9 +89,7 @@ public class SchuheController {
 
             @DeleteMapping("/schuhe/delete/{schuheId}")
             public ResponseEntity<Void> deleteSchuhebyId(@PathVariable String schuheId) {
-                if (!roleService.userHasRole("admin") || !roleService.userHasRole("vermieter")) {
-                    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-                }
+                
                 Optional<Schuhe> schuheOpt = schuheRepository.findById(schuheId);
             
                 if (schuheOpt.isPresent()) {
