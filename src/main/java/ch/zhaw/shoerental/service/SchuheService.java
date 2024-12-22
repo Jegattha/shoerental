@@ -49,7 +49,7 @@ public class SchuheService {
             Schuhe schuhe = schuheToAssign.get();
             if (schuhe.getSchuheState() == SchuheState.VERMIETET) {
                 schuhe.setSchuheState(SchuheState.VERFUEGBAR);
-                schuhe.setMieterId(null); // Zurücksetzen des Mieter-IDs auf null, da die Kleidung nun verfügbar ist
+                schuhe.setMieterId(null); // Zurücksetzen des Mieter-IDs auf null, da die Schuhe nun verfügbar ist
                 schuhe.setMietdauerVon(null);
                 schuhe.setMietdauerBis(null);
                 schuhe.setTotalPreis(null);

@@ -1,5 +1,8 @@
 # Beschreibung der Modul- und Integrationstests
 
-![Integrationstests](figures/integrationstests.drawio.svg)
+![Integrationstest Tests](figures/ServiceCOntrollerTestIntegration.PNG)
+![Integrationstest Tests](figures/ServiceCOntrollerTestIntegration2.PNG)
+![unit Tests](figures/ServiceUniteTest.PNG)
+![unit Tests](figures/ServiceUniteTest2.PNG)
 
-![unit Tests](figures/unitTests.drawio.svg)
+alles anderen tests habe ich auch als bilder hinzugefügt

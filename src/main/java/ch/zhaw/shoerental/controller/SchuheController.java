@@ -110,7 +110,7 @@ public class SchuheController {
                 if (existingSchuheOpt.isPresent()) {
                     Schuhe existingSchuhe = existingSchuheOpt.get();
                     
-                    // Aktualisiere die Werte der vorhandenen Kleidung mit den neuen Werten aus kDTO
+                    // Aktualisiere die Werte der vorhandenen Schuhe mit den neuen Werten aus kDTO
                     existingSchuhe.setMarke(sDTO.getMarke());
                     existingSchuhe.setPreis(sDTO.getPreis());
                     existingSchuhe.setSchuheType(sDTO.getSchuheType());
@@ -119,7 +119,7 @@ public class SchuheController {
                     existingSchuhe.setSchuheBeschreibung(sDTO.getSchuheBeschreibung());
                     
         
-                    // Speichere die aktualisierte Kleidung in der Datenbank
+                    // Speichere die aktualisierte Schuhe in der Datenbank
                     Schuhe updatedSchuhe = schuheRepository.save(existingSchuhe);
         
                     return new ResponseEntity<>(updatedSchuhe, HttpStatus.OK);
