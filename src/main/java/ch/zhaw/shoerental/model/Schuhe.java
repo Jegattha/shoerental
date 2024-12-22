@@ -35,6 +35,7 @@ public class Schuhe {
     @NonNull
     private String schuheBeschreibung;
 
+
     private String vermieterId;
     private String mieterId;
 

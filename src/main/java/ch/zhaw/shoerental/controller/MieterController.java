@@ -39,21 +39,28 @@ import org.springframework.security.oauth2.jwt.Jwt;
 @RequestMapping("/api") 
 public class MieterController {
 
-    @Autowired
-    MieterRepository mieterRepository;
+    private final MieterRepository mieterRepository;
+    private final MailValidatorService mailValidatorService;
+    private final RoleService roleService;
 
     @Autowired
-    MailValidatorService mailValidatorService;
-
-    @Autowired
-    RoleService roleService;
-
-
+    public MieterController(MieterRepository mieterRepository, 
+                            MailValidatorService mailValidatorService, 
+                            RoleService roleService) {
+        this.mieterRepository = mieterRepository;
+        this.mailValidatorService = mailValidatorService;
+        this.roleService = roleService;
+    }
 
             @GetMapping("/mieter")
 public ResponseEntity<Page<Mieter>> getAllMieter(
      @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
      @RequestParam(required = false, defaultValue = "2") Integer pageSize) {
+
+        if (!roleService.userHasRole("admin")){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
  Page<Mieter> allFree = mieterRepository.findAll(PageRequest.of(pageNumber - 1, pageSize));
  return new ResponseEntity<>(allFree, HttpStatus.OK);
 } 
@@ -61,6 +68,11 @@ public ResponseEntity<Page<Mieter>> getAllMieter(
 
 @GetMapping("/mieter/{id}")
 public ResponseEntity<Mieter> getMieterById(@PathVariable String id) {
+
+    if (!roleService.userHasRole("admin")){
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
     Optional<Mieter> optMieter = mieterRepository.findById(id);
     if (optMieter.isPresent()) {
         return new ResponseEntity<>(optMieter.get(), HttpStatus.OK);
@@ -75,7 +87,9 @@ public ResponseEntity<Mieter> getMieterById(@PathVariable String id) {
   public ResponseEntity<Mieter> createMieter(
       @RequestBody MieterCreateDTO mDTO){
 
-       
+        if (!roleService.userHasRole("admin")){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
 
           Mieter mDAO = new Mieter(mDTO.getName(),mDTO.getEmail(), mDTO.getTelefonnummer(), mDTO.getAdresse(), mDTO.getPlz(), mDTO.getOrt());
           Mieter m = mieterRepository.save(mDAO);    
@@ -89,6 +103,10 @@ public ResponseEntity<Mieter> getMieterById(@PathVariable String id) {
 
 @DeleteMapping("/mieter/delete/{mieterId}")
 public ResponseEntity<Void> deleteMieter(@PathVariable String mieterId) {
+
+    if (!roleService.userHasRole("admin")) {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
     
    
     if (mieterRepository.existsById(mieterId)) {
@@ -101,12 +119,21 @@ public ResponseEntity<Void> deleteMieter(@PathVariable String mieterId) {
 
  @PutMapping("/mieter/{mieterId}")
 public ResponseEntity<Mieter> updateMieter(@PathVariable String mieterId, @RequestBody MieterCreateDTO mDTO) {
+
+    if (!roleService.userHasRole("admin")) {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
     Optional<Mieter> optMieter = mieterRepository.findById(mieterId);
     if (optMieter.isPresent()) {
         Mieter existingMieter = optMieter.get();
         // Aktualisiere die Mieterinformationen basierend auf mDTO
         existingMieter.setName(mDTO.getName());
         existingMieter.setEmail(mDTO.getEmail());
+        existingMieter.setTelefonnummer(mDTO.getTelefonnummer());
+        existingMieter.setAdresse(mDTO.getAdresse());
+        existingMieter.setPlz(mDTO.getPlz());
+        existingMieter.setOrt(mDTO.getOrt());
         mieterRepository.save(existingMieter);
         return new ResponseEntity<>(existingMieter, HttpStatus.OK);
     } else {

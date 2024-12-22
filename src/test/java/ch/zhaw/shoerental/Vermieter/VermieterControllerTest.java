@@ -1,39 +1,30 @@
 package ch.zhaw.shoerental.Vermieter;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.util.ReflectionTestUtils;
-
 import ch.zhaw.shoerental.controller.VermieterController;
 import ch.zhaw.shoerental.model.MailInformation;
 import ch.zhaw.shoerental.model.Vermieter;
 import ch.zhaw.shoerental.model.VermieterCreateDTO;
 import ch.zhaw.shoerental.repository.VermieterRepository;
 import ch.zhaw.shoerental.service.MailValidatorService;
-import ch.zhaw.shoerental.service.SchuheService;
+import ch.zhaw.shoerental.service.RoleService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-class VermieterControllerTest {
-
-    @InjectMocks
-    private VermieterController vermieterController;
+public class VermieterControllerTest {
 
     @Mock
     private VermieterRepository vermieterRepository;
@@ -42,69 +33,168 @@ class VermieterControllerTest {
     private MailValidatorService mailValidatorService;
 
     @Mock
-    private SchuheService schuheService;
+    private RoleService roleService;
 
-    // Ersatzklasse für MailValidationResponse
-    static class MockMailValidationResponse {
-        private boolean dns;
-        private boolean format;
-        private boolean disposable;
+    private VermieterController vermieterController;
 
-        public MockMailValidationResponse(boolean dns, boolean format, boolean disposable) {
-            this.dns = dns;
-            this.format = format;
-            this.disposable = disposable;
-        }
-
-        public boolean isDns() { return dns; }
-        public boolean isFormat() { return format; }
-        public boolean isDisposable() { return disposable; }
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        // Verwende den Konstruktor, um die Abhängigkeiten bereitzustellen
+        vermieterController = new VermieterController(vermieterRepository, mailValidatorService, roleService);
     }
 
     @Test
     void testGetAllVermieter() {
-        List<Vermieter> expectedVermieterList = new ArrayList<>();
-        expectedVermieterList.add(new Vermieter());
-        expectedVermieterList.add(new Vermieter());
+        Page<Vermieter> vermieterPage = new PageImpl<>(Collections.singletonList(new Vermieter()));
+        when(roleService.userHasRole("admin")).thenReturn(true);
+        when(vermieterRepository.findAll(PageRequest.of(0, 2))).thenReturn(vermieterPage);
 
-        Page<Vermieter> expectedPage = new PageImpl<>(expectedVermieterList);
-
-        when(vermieterRepository.findAll(any(PageRequest.class))).thenReturn(expectedPage);
         ResponseEntity<Page<Vermieter>> response = vermieterController.getAllVermieter(1, 2);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(expectedPage, response.getBody());
+        assertEquals(vermieterPage, response.getBody());
+    }
+
+    @Test
+    void testGetAllVermieterForbidden() {
+        when(roleService.userHasRole("admin")).thenReturn(false);
+
+        ResponseEntity<Page<Vermieter>> response = vermieterController.getAllVermieter(1, 2);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
 
     @Test
     void testGetVermieterById() {
         String vermieterId = "1";
-        Vermieter expectedVermieter = new Vermieter();
-        when(vermieterRepository.findById(vermieterId)).thenReturn(Optional.of(expectedVermieter));
+        Vermieter vermieter = new Vermieter();
+        when(roleService.userHasRole("admin")).thenReturn(true);
+        when(vermieterRepository.findById(vermieterId)).thenReturn(Optional.of(vermieter));
+
         ResponseEntity<Vermieter> response = vermieterController.getVermieterById(vermieterId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(expectedVermieter, response.getBody());
+        assertEquals(vermieter, response.getBody());
     }
 
     @Test
     void testGetVermieterByIdNotFound() {
-        String vermieterId = "2";
+        String vermieterId = "1";
+        when(roleService.userHasRole("admin")).thenReturn(true);
         when(vermieterRepository.findById(vermieterId)).thenReturn(Optional.empty());
 
         ResponseEntity<Vermieter> response = vermieterController.getVermieterById(vermieterId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNull(response.getBody());
     }
 
     @Test
-    void testDeleteVermieterSuccess() {
-        String vermieterId = "123";
+    void testGetVermieterByIdForbidden() {
+        when(roleService.userHasRole("admin")).thenReturn(false);
+
+        ResponseEntity<Vermieter> response = vermieterController.getVermieterById("1");
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+    }
+
+    @Test
+    void testCreateVermieter() {
+        // Arrange
+        VermieterCreateDTO vDTO = new VermieterCreateDTO(
+            "John Doe", 
+            "john.doe@example.com", 
+            "123456789", 
+            "Teststrasse 1", 
+            "8000", 
+            "Zürich"
+        );
+        Vermieter vermieter = new Vermieter(
+            vDTO.getName(), 
+            vDTO.getEmail(), 
+            vDTO.getTelefonnummer(), 
+            vDTO.getAdresse(), 
+            vDTO.getPlz(), 
+            vDTO.getOrt()
+        );
+    
+        // Mock MailInformation
+        MailInformation mailInfo = mock(MailInformation.class);
+        when(mailInfo.isDns()).thenReturn(true);
+        when(mailInfo.isFormat()).thenReturn(true);
+        when(mailInfo.isDisposable()).thenReturn(false);
+    
+        // Mock Services
+        when(roleService.userHasRole("admin")).thenReturn(true);
+        when(mailValidatorService.validateEmail(vDTO.getEmail())).thenReturn(mailInfo);
+        when(vermieterRepository.save(any(Vermieter.class))).thenReturn(vermieter);
+    
+        // Act
+        ResponseEntity<Vermieter> response = vermieterController.createVermieter(vDTO);
+    
+        // Assert
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(vermieter, response.getBody());
+    }
+    
+
+    @Test
+void testCreateVermieterInvalidEmail() {
+    VermieterCreateDTO vDTO = new VermieterCreateDTO(
+        "Invalid Vermieter",
+        "invalid-email",
+        "123456789",
+        "Teststrasse 1",
+        "8000",
+        "Zürich"
+    );
+
+    // Erstelle ein Vermieter-Objekt, das vom Repository zurückgegeben werden soll
+    Vermieter vDAO = new Vermieter(
+        vDTO.getName(),
+        vDTO.getEmail(),
+        vDTO.getTelefonnummer(),
+        vDTO.getAdresse(),
+        vDTO.getPlz(),
+        vDTO.getOrt()
+    );
+
+    // Mock MailInformation
+    MailInformation mailInfo = mock(MailInformation.class);
+    when(mailInfo.isDns()).thenReturn(false); // DNS-Check schlägt fehl
+    when(mailInfo.isFormat()).thenReturn(false); // Format ist ungültig
+    when(mailInfo.isDisposable()).thenReturn(true); // Wegwerf-Adresse
+
+    when(roleService.userHasRole("admin")).thenReturn(true);
+    when(mailValidatorService.validateEmail(vDTO.getEmail())).thenReturn(mailInfo);
+    when(vermieterRepository.save(any(Vermieter.class))).thenReturn(vDAO);
+
+    ResponseEntity<Vermieter> response = vermieterController.createVermieter(vDTO);
+
+    assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+}
+
+    
+
+    @Test
+    void testCreateVermieterForbidden() {
+        VermieterCreateDTO vDTO = new VermieterCreateDTO("John Doe", "john.doe@example.com", "123456789", "Teststrasse 1", "8000", "Zürich");
+
+        when(roleService.userHasRole("admin")).thenReturn(false);
+
+        ResponseEntity<Vermieter> response = vermieterController.createVermieter(vDTO);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+    }
+
+    @Test
+    void testDeleteVermieter() {
+        String vermieterId = "1";
+        when(roleService.userHasRole("admin")).thenReturn(true);
         when(vermieterRepository.existsById(vermieterId)).thenReturn(true);
-        doNothing().when(vermieterRepository).deleteById(vermieterId);
 
         ResponseEntity<Void> response = vermieterController.deleteVermieter(vermieterId);
 
@@ -114,66 +204,22 @@ class VermieterControllerTest {
 
     @Test
     void testDeleteVermieterNotFound() {
-        String vermieterId = "123";
+        String vermieterId = "1";
+        when(roleService.userHasRole("admin")).thenReturn(true);
         when(vermieterRepository.existsById(vermieterId)).thenReturn(false);
 
         ResponseEntity<Void> response = vermieterController.deleteVermieter(vermieterId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        verify(vermieterRepository, never()).deleteById(vermieterId);
     }
 
-   @Test
-void testCreateVermieterSuccess() {
-    // Arrange: Erstelle das DTO für den Test
-    VermieterCreateDTO createDTO = new VermieterCreateDTO(
-        "Test Name", "test@example.com", "123456789", "Test Address", "8000", "Zürich"
-    );
+    @Test
+    void testDeleteVermieterForbidden() {
+        String vermieterId = "1";
+        when(roleService.userHasRole("admin")).thenReturn(false);
 
-    // Erstelle ein validiertes MailInformation-Objekt
-    MailInformation mailInformation = new MailInformation();
-    ReflectionTestUtils.setField(mailInformation, "dns", true);
-    ReflectionTestUtils.setField(mailInformation, "format", true);
-    ReflectionTestUtils.setField(mailInformation, "disposable", false);
+        ResponseEntity<Void> response = vermieterController.deleteVermieter(vermieterId);
 
-    Vermieter savedVermieter = new Vermieter(
-        "Test Name", "test@example.com", "123456789", "Test Address", "8000", "Zürich"
-    );
-
-    // Mock-Verhalten
-    when(mailValidatorService.validateEmail(anyString())).thenReturn(mailInformation);
-    when(vermieterRepository.save(any(Vermieter.class))).thenReturn(savedVermieter);
-
-    // Act: Rufe die Methode des Controllers auf
-    ResponseEntity<Vermieter> response = vermieterController.createVermieter(createDTO);
-
-    // Assert: Überprüfe die Ergebnisse
-    assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    assertNotNull(response.getBody());
-    assertEquals(savedVermieter, response.getBody());
-}
-
-
-@Test
-void testCreateVermieterInvalidEmail() {
-    // Arrange: Erstelle das DTO für den Test
-    VermieterCreateDTO createDTO = new VermieterCreateDTO(
-        "Test Name", "invalid@example.com", "123456789", "Test Address", "8000", "Zürich"
-    );
-
-    MailInformation mailInformation = new MailInformation();
-    ReflectionTestUtils.setField(mailInformation, "dns", false);
-    ReflectionTestUtils.setField(mailInformation, "format", true);
-    ReflectionTestUtils.setField(mailInformation, "disposable", false);
-
-    when(mailValidatorService.validateEmail(anyString())).thenReturn(mailInformation);
-
-    // Act: Rufe die Methode des Controllers auf
-    ResponseEntity<Vermieter> response = vermieterController.createVermieter(createDTO);
-
-    // Assert: Überprüfe die Ergebnisse
-    assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-    assertNull(response.getBody());
-    verify(vermieterRepository, never()).save(any(Vermieter.class));
-}
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+    }
 }

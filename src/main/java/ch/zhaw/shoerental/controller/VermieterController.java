@@ -26,7 +26,7 @@ import ch.zhaw.shoerental.model.VermieterCreateDTO;
 import ch.zhaw.shoerental.repository.VermieterRepository;
 import ch.zhaw.shoerental.service.MailValidatorService;
 import ch.zhaw.shoerental.service.RoleService;
-import ch.zhaw.shoerental.service.SchuheService;
+
 
 
 
@@ -34,26 +34,32 @@ import ch.zhaw.shoerental.service.SchuheService;
 
 
 @RestController
-@RequestMapping("/api") 
+@RequestMapping("/api")
 public class VermieterController {
 
-    @Autowired
-    VermieterRepository vermieterRepository;
+    private final VermieterRepository vermieterRepository;
+    private final MailValidatorService mailValidatorService;
+    private final RoleService roleService;
 
     @Autowired
-    MailValidatorService mailValidatorService;
-
-  @Autowired
-    SchuheService schuheService;
-
-    @Autowired
-    RoleService roleService;
+    public VermieterController(
+            VermieterRepository vermieterRepository,
+            MailValidatorService mailValidatorService,
+            RoleService roleService) {
+        this.vermieterRepository = vermieterRepository;
+        this.mailValidatorService = mailValidatorService;
+        this.roleService = roleService;
+    }
 
             @GetMapping("/vermieter")
   public ResponseEntity<Page<Vermieter>> getAllVermieter(
         @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
         @RequestParam(required = false, defaultValue = "2") Integer pageSize        
     ) {
+        if (!roleService.userHasRole("admin")){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Page<Vermieter> allVermieter = vermieterRepository.findAll(PageRequest.of(pageNumber - 1, pageSize));
         return new ResponseEntity<>(allVermieter, HttpStatus.OK);
     }
@@ -61,6 +67,10 @@ public class VermieterController {
 
     @GetMapping("/{vermieterId}")
     public ResponseEntity<Vermieter> getVermieterById(@PathVariable String vermieterId) {
+        if (!roleService.userHasRole("admin")){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Optional<Vermieter> optVermieter = vermieterRepository.findById(vermieterId);
         if (optVermieter.isPresent()) {
             Vermieter vermieter = optVermieter.get();
@@ -72,6 +82,13 @@ public class VermieterController {
 
     @DeleteMapping("/vermieter/delete/{vermieterId}")
 public ResponseEntity<Void> deleteVermieter(@PathVariable String vermieterId) {
+    if (!roleService.userHasRole("admin")){
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    if (!roleService.userHasRole("admin")){
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
 
    
     if (vermieterRepository.existsById(vermieterId)) {
@@ -86,9 +103,13 @@ public ResponseEntity<Void> deleteVermieter(@PathVariable String vermieterId) {
 
         @PostMapping("/vermieter")
     public ResponseEntity<Vermieter> createVermieter(
+        
         @RequestBody VermieterCreateDTO vDTO){
+            
 
-           
+            if (!roleService.userHasRole("admin")){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
 
             Vermieter vDAO = new Vermieter(vDTO.getName(),vDTO.getEmail(), vDTO.getTelefonnummer(), vDTO.getAdresse(), vDTO.getPlz(), vDTO.getOrt());
             Vermieter v = vermieterRepository.save(vDAO);

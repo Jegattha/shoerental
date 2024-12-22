@@ -45,7 +45,7 @@ public class SchuheController {
      public ResponseEntity<Schuhe> createSchuhe(
 
              @RequestBody SchuheCreateDTO sDTO, @RequestParam String vermieterId) {
-                
+               
 
          Vermieter vermieter = vermieterService.getVermieterById(vermieterId);
      
@@ -89,7 +89,7 @@ public class SchuheController {
 
             @DeleteMapping("/schuhe/delete/{schuheId}")
             public ResponseEntity<Void> deleteSchuhebyId(@PathVariable String schuheId) {
-                
+    
                 Optional<Schuhe> schuheOpt = schuheRepository.findById(schuheId);
             
                 if (schuheOpt.isPresent()) {
@@ -104,6 +104,7 @@ public class SchuheController {
             public ResponseEntity<Schuhe> updateSchuhe(
                     @PathVariable String schuheId,
                     @RequestBody SchuheCreateDTO sDTO) {
+
                 Optional<Schuhe> existingSchuheOpt = schuheRepository.findById(schuheId);
         
                 if (existingSchuheOpt.isPresent()) {

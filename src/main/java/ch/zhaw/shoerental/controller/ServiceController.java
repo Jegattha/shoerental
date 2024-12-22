@@ -31,18 +31,21 @@ import ch.zhaw.shoerental.service.MieterService;
 @RequestMapping("/api/service") 
 public class ServiceController {
 
-    @Autowired
-    SchuheService schuheService;
+    private final SchuheService schuheService;
+    private final MieterService mieterService;
+    private final VermieterService vermieterService;
+    private final MailService mailService;
 
     @Autowired
-    MieterService mieterService;
-
-    @Autowired
-    VermieterService vermieterService;
-
-    @Autowired
-    MailService mailService;
-
+    public ServiceController(SchuheService schuheService,
+                             MieterService mieterService,
+                             VermieterService vermieterService,
+                             MailService mailService) {
+        this.schuheService = schuheService;
+        this.mieterService = mieterService;
+        this.vermieterService = vermieterService;
+        this.mailService = mailService;
+    }
 
 
 

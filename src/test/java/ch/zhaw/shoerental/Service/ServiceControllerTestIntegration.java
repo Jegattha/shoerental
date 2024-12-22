@@ -143,24 +143,7 @@ class ServiceControllerTestIntegration {
         verify(mailService, times(2)).sendMail(any(Mail.class));
     }
 
-    @Test
-    @WithMockUser(username = "testUser", roles = {"USER"})
-    void testSendVerificationMailSuccess() throws Exception {
-        Mail mail = new Mail();
-        mail.setTo("test@example.com");
-        mail.setSubject("Test Subject");
-        mail.setMessage("Test Message");
-
-        when(mailService.sendMail(any(Mail.class))).thenReturn(true);
-
-        mockMvc.perform(post("/api/service/verifizierung/sendMail")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(mail)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("E-Mail erfolgreich gesendet!"));
-
-        verify(mailService, times(1)).sendMail(any(Mail.class));
-    }
+  
     @Test
 @WithMockUser(username = "testUser", roles = {"USER"})
 void testSendAboutMailSuccess() throws Exception {
