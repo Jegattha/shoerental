@@ -93,7 +93,7 @@ Wie kann ich eine Plattform schaffen, die es Modebewussten und Eventteilnehmern 
 
 #  CREATE BOARD: MyApp
 
-![Use case diagram](figures/uc-diagram.drawio.svg)
+
 
 ## IDEEN-BESCHREIBUNG
 > Im Feld Ideenbeschreibung notieren wir den Kern unserer Idee. Sie sollte sich auf einen klaren Anwendungsfall fokussieren und diesen beschreiben.

@@ -1,4 +1,5 @@
 # Beschreibung des Frontends mit Screenshots der fertigen Applikation
+Alle Bilder sind hier abgelegt: 
 1. BIld: Wenn man die Website https://shoerental.azurewebsites.net/ besucht, gelangt man zur Start-seite. Hier sind zunächst keine Schuhe sichtbar, sondern lediglich eine Beschreibung.
 Im dargestellten Ausschnitt ist die Startseite zu sehen. Es gibt drei markierte Punkte, auf die ich genauer eingehen werde:
 
@@ -65,9 +66,7 @@ Damit ist der Mietvorgang für die Schuhe zwischen Mieter und Vermieter abgeschl
 # Automatisierte ROllenzuweisung
 23. Bild: Wenn ein neuer Benutzer sich registriert und dabei die Rolle auswählt, die er tätigen möchte, dann wird im Auth0 automatisch diese Rolle zugewisen, und somit auch die Berechtigungen, die er für diese Rolle erhält. Nun muss die Rolle nicht mehr manuell hinzugefügt werden auf Auth0 für jeden neuen Benutzer.
 
-# ChatGPT (Optional)
-Neben der E-Mail Anbindung wurde auch eine Integration mit ChatGPT für das Projekt 
-implementiert. Das Ziel besteht darin, bei der Erstellung von Schuhen mit Hilfe der ChatGPT-API eine detaillierte Schuhbeschreibung zu generieren (siehe Kapitel Beschreibung des Frontends). Diese Information wird im Backend gespeichert und anschliessend an das Front-end übermittelt. Der Vermieter kann in der Schuhebeschreibung einzelne Punkte stichwortar-tig erfassen, und in der Ausgabe erhält man eine ausführliche Beschreibung der Schuhe. Der API-Key wurde uns zur Verfügung gestellt.  
+
 
 
 
