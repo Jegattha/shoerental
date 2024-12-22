@@ -6,8 +6,11 @@
 # USE-CASE BESCHREIBUNG
 In diesem Abschnitt werden das Use-Case-Diagramm sowie die Use-Case-Beschreibung be-handelt, die zwei Hauptakteure identifizieren – Den Vermieter und den Mieter. Der Vermieter, der gleichzeitig der Betreiber der Plattform «Shoerental» ist, fungiert als alleiniger Eigentümer und bietet seine Schuhe zur Miete an. Der Vermieter hat die Befugnis, die Schuhe (Damen- und Herrenschuhe) zu aktualisieren (durch Preisanpassungen oder andere Felder) oder sie zu löschen. Zusätzlich kann er die Mieterseite bearbeiten und Mieter löschen. Des Weiteren kann der Vermieter die Schuhe nach der Rücksendung durch den Mieter erneut freigeben. Durch diese Freigabe ändert sich der Status von Vermietet auf Verfügbar, wodurch das Kleidungs-stück für den nächsten Mieter verfügbar wird. Der Mieter hingegen kann Schuhe mieten. Nachdem er ein paar Schuh gemietet hat, erhält er eine Benachrichtigung per E-Mail über die Dauer der Mietzeit. Sobald der Mieter das paar Schuh zurückgibt und der Vermieter es entge-gennimmt, kann der Vermieter den Freigabe-Button betätigen. In diesem Fall wird dem Mieter eine Benachrichtigung per E-Mail zugesendet, dass die Schuhe erfolgreich zurückgesendet wurde.
 
-![Use case Beschreibung](figures/uc-Beschreibung.drawio.svg)
-
+![Use case Beschreibung](figures/Usecase1.png)
+![Use case Beschreibung](figures/usecase2.PNG)
+![Use case Beschreibung](figures/usecase3.PNG)
+![Use case Beschreibung](figures/usecase4.PNG)
+![Use case Beschreibung](figures/usecase5.PNG)
 
 # Fachliches Datenmodell (ER-Modell) mit Erläuterungen
 
@@ -57,4 +60,12 @@ Fehlerhafte Aktionen (z. B. ungültige Eingaben) sollten Benutzer mit klaren Feh
 
 # Mockup oder Skizze des UIs
 
-![Mockups](figures/mockup.drawio.svg)
+![Mockups](figures/Mock1.PNG)
+![Mockups](figures/Mock2.PNG)
+![Mockups](figures/Mock3.PNG)
+![Mockups](figures/Mock4.PNG)
+![Mockups](figures/Mock5.PNG)
+![Mockups](figures/Mock6.PNG)
+![Mockups](figures/Mock7.PNG)
+![Mockups](figures/Mock8.PNG)
+![Mockups](figures/Mock9.PNG)
