@@ -174,7 +174,7 @@ Mit dem Schuh-Mietportal ermögliche ich es modebewussten Menschen, exklusive un
 
 - Google Ads: Durch gezielte Suchmaschinenwerbung können Menschen angesprochen werden, die nach Mietlösungen für besondere Schuhe suchen.
 
-- E-Mail-Marketing: Bestandskunden könnten regelmäßig über neue Kollektionen, besondere Angebote oder Rückgabeerinnerungen per E-Mail informiert werden.
+- E-Mail-Marketing: Bestandskunden könnten regelmäßig über neue Kollektionen, besondere Angebote oder Rückgabeerinnerungen per E-Mail informiert werden.   
 
 - Fashion-Blogs und Influencer-Kooperationen: Mode-Influencer und Blogs könnten gezielt Werbung für das Mietportal machen und ihre Follower dazu anregen, die Plattform zu nutzen.
 
