@@ -35,7 +35,7 @@ public class MieterJunitTest {
 
         mieter.setOrt("Basel");
         assertEquals("Basel", mieter.getOrt());
-    }
+    }  
 
     @Test
     void testConstructorWithNonNullParameters() {
