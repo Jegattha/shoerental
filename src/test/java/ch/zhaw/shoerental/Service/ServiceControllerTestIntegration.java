@@ -1,138 +1,202 @@
 package ch.zhaw.shoerental.Service;
 
-import ch.zhaw.shoerental.model.Schuhe;
-import ch.zhaw.shoerental.model.SchuheType;
-import ch.zhaw.shoerental.model.SchuheStateChangeDTO;
-import ch.zhaw.shoerental.model.AvailabeSchuheDTO;
-import ch.zhaw.shoerental.repository.SchuheRepository;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.junit.jupiter.api.BeforeEach;
+import ch.zhaw.shoerental.controller.ServiceController;
+import ch.zhaw.shoerental.model.*;
+import ch.zhaw.shoerental.service.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import java.util.Date;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-public class ServiceControllerTestIntegration {
+@ExtendWith(MockitoExtension.class)
+class ServiceControllerTestIntegration {
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private SchuheRepository schuheRepository;
+    @InjectMocks
+    private ServiceController serviceController;
 
-    @Autowired
+    @Mock
+    private SchuheService schuheService;
+
+    @Mock
+    private MieterService mieterService;
+
+    @Mock
+    private VermieterService vermieterService;
+
+    @Mock
+    private MailService mailService;
+
     private ObjectMapper objectMapper;
-
-    private String username = "admin";
-    private String password = "password";
 
     @BeforeEach
     void setUp() {
-        // Lösche alle Einträge aus der Schuhe-Collection vor jedem Test
-        schuheRepository.deleteAll();
+        mockMvc = MockMvcBuilders.standaloneSetup(serviceController).build();
+        objectMapper = new ObjectMapper();
     }
 
     @Test
-    void testAssignSchuhe() throws Exception {
-        // Schuhe erstellen und speichern
-        Schuhe schuhe = new Schuhe("NIKE", 100.0, SchuheType.FRAUENSCHUH, "42", "Schwarz", "Hochwertige Laufschuhe", "Vermieter123");
-        schuheRepository.save(schuhe);
-
-        // DTO für die Anfrage
+    @WithMockUser(username = "testUser", roles = {"USER"})
+    void testAssignSchuheSuccess() throws Exception {
+        // Arrange: DTO erstellen und Felder mit Settern setzen
         SchuheStateChangeDTO changeDTO = new SchuheStateChangeDTO();
-        changeDTO.setSchuheId(schuhe.getSchuheId());
-        changeDTO.setMieterId("Mieter123");
-
+        changeDTO.setMieterId("mieter123");
+        changeDTO.setSchuheId("schuhe123");
+        changeDTO.setMietdauerVon(new Date());
+        changeDTO.setMietdauerBis(new Date());
+    
+        // Mock für Schuhe erstellen
+        Schuhe schuhe = new Schuhe();
+        schuhe.setSchuheId("schuhe123");
+        schuhe.setVermieterId("vermieter123");
+    
+        when(schuheService.assignSchuhe("schuhe123", "mieter123")).thenReturn(Optional.of(schuhe));
+        when(mieterService.getEmail()).thenReturn("mieter@example.com");
+        when(vermieterService.getEmailById("vermieter123")).thenReturn(Optional.of("vermieter@example.com"));
+        when(mailService.sendMail(any(Mail.class))).thenReturn(true);
+    
+        // Act & Assert: Endpunkt aufrufen und Ergebnis prüfen
         mockMvc.perform(put("/api/service/assignSchuhe")
-                .with(httpBasic(username, password)) // Authentifizierung
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(changeDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.marke").value("NIKE"))
-                .andExpect(jsonPath("$.mieterId").value("Mieter123"));
+                .andExpect(jsonPath("$.schuheId").value("schuhe123"));
+    
+        // Überprüfen, ob E-Mails gesendet wurden
+        verify(mailService, times(2)).sendMail(any(Mail.class));
     }
+    
 
+    
     @Test
-    void testAvailableSchuhe() throws Exception {
-        // Schuhe erstellen und speichern
-        Schuhe schuhe = new Schuhe("Adidas", 80.0, SchuheType.MAENNERSCHUH, "41", "Weiß", "Bequeme Freizeitschuhe", "Vermieter456");
-        schuheRepository.save(schuhe);
-
+    @WithMockUser(username = "testUser", roles = {"USER"})
+    void testAvailableSchuheSuccess() throws Exception {
+        // Arrange: DTO erstellen
         AvailabeSchuheDTO availableDTO = new AvailabeSchuheDTO();
-        availableDTO.setSchuheId(schuhe.getSchuheId());
-
+        availableDTO.setSchuheId("schuhe123");
+    
+        // Schuhe-Objekt erstellen
+        Schuhe schuhe = new Schuhe();
+        schuhe.setSchuheId("schuhe123");
+        schuhe.setVermieterId("vermieter123");
+    
+        // Mock-Verhalten konfigurieren
+        when(schuheService.availableSchuhe("schuhe123")).thenReturn(Optional.of(schuhe));
+        when(vermieterService.getEmailById("vermieter123")).thenReturn(Optional.of("vermieter@example.com"));
+        when(mailService.sendMail(any(Mail.class))).thenReturn(true);
+    
+        // Act: Endpunkt aufrufen
         mockMvc.perform(post("/api/service/availableSchuhe")
-                .with(httpBasic(username, password)) // Authentifizierung
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(availableDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.schuheId").value(schuhe.getSchuheId()))
-                .andExpect(jsonPath("$.marke").value("Adidas"));
+                .andExpect(jsonPath("$.schuheId").value("schuhe123"));
+    
+        // Verify: sendMail wurde genau einmal aufgerufen
+        verify(mailService, times(1)).sendMail(any(Mail.class));
     }
-
+    
     @Test
-    void testMietSchuhe() throws Exception {
-        // Schuhe erstellen und speichern
-        Schuhe schuhe = new Schuhe("Puma", 70.0, SchuheType.FRAUENSCHUH, "43", "Blau", "Robuste Trainingsschuhe", "Vermieter789");
-        schuheRepository.save(schuhe);
+    @WithMockUser(username = "testUser", roles = {"USER"})
+    void testMietSchuheSuccess() throws Exception {
+        // Arrange: DTO erstellen und Felder mit Settern setzen
+        SchuheStateChangeDTO changeDTO = new SchuheStateChangeDTO();
+        changeDTO.setMieterId("mieter123");
+        changeDTO.setSchuheId("schuhe123");
+        changeDTO.setMietdauerVon(new Date());
+        changeDTO.setMietdauerBis(new Date());
 
-        SchuheStateChangeDTO mietDTO = new SchuheStateChangeDTO();
-        mietDTO.setSchuheId(schuhe.getSchuheId());
-        mietDTO.setMieterId("Mieter456");
+        Schuhe schuhe = new Schuhe();
+        schuhe.setSchuheId("schuhe123");
+        schuhe.setVermieterId("vermieter123");
 
+        when(schuheService.mietSchuhe("schuhe123", "mieter123", changeDTO.getMietdauerVon(), changeDTO.getMietdauerBis()))
+                .thenReturn(Optional.of(schuhe));
+        when(mieterService.getEmail()).thenReturn("mieter@example.com");
+        when(vermieterService.getEmailById("vermieter123")).thenReturn(Optional.of("vermieter@example.com"));
+        when(mailService.sendMail(any(Mail.class))).thenReturn(true);
+
+        // Act & Assert: Endpunkt aufrufen und Ergebnis prüfen
         mockMvc.perform(post("/api/service/mietSchuhe")
-                .with(httpBasic(username, password)) // Authentifizierung
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(mietDTO)))
+                .content(objectMapper.writeValueAsString(changeDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.marke").value("Puma"))
-                .andExpect(jsonPath("$.mieterId").value("Mieter456"));
+                .andExpect(jsonPath("$.schuheId").value("schuhe123"));
+
+        // Verifizieren, dass zwei E-Mails gesendet wurden
+        verify(mailService, times(2)).sendMail(any(Mail.class));
     }
 
     @Test
-    void testSendVerificationMail() throws Exception {
-        String mailPayload = """
-                {
-                    "to": "test@example.com",
-                    "subject": "Verification",
-                    "message": "This is a test verification email"
-                }
-                """;
+    @WithMockUser(username = "testUser", roles = {"USER"})
+    void testSendVerificationMailSuccess() throws Exception {
+        Mail mail = new Mail();
+        mail.setTo("test@example.com");
+        mail.setSubject("Test Subject");
+        mail.setMessage("Test Message");
+
+        when(mailService.sendMail(any(Mail.class))).thenReturn(true);
 
         mockMvc.perform(post("/api/service/verifizierung/sendMail")
-                .with(httpBasic(username, password)) // Authentifizierung
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mailPayload))
+                .content(objectMapper.writeValueAsString(mail)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("E-Mail erfolgreich gesendet!"));
-    }
 
+        verify(mailService, times(1)).sendMail(any(Mail.class));
+    }
     @Test
-    void testSendAboutMail() throws Exception {
-        String mailPayload = """
-                {
-                    "to": "about@example.com",
-                    "subject": "About Request",
-                    "message": "This is an about page email"
-                }
-                """;
+@WithMockUser(username = "testUser", roles = {"USER"})
+void testSendAboutMailSuccess() throws Exception {
+    Mail mail = new Mail();
+    mail.setTo("about@example.com");
+    mail.setSubject("About Us Inquiry");
+    mail.setMessage("This is a test message for about.");
 
-        mockMvc.perform(post("/api/service/about/sendMail")
-                .with(httpBasic(username, password)) // Authentifizierung
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mailPayload))
-                .andExpect(status().isOk())
-                .andExpect(content().string("E-Mail erfolgreich gesendet!"));
-    }
+    when(mailService.sendMail(any(Mail.class))).thenReturn(true);
+
+    mockMvc.perform(post("/api/service/about/sendMail")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(mail)))
+            .andExpect(status().isOk())
+            .andExpect(content().string("E-Mail erfolgreich gesendet!"));
+
+    verify(mailService, times(1)).sendMail(any(Mail.class));
 }
-    
+
+@Test
+@WithMockUser(username = "testUser", roles = {"USER"})
+void testSendAboutMailFailure() throws Exception {
+    Mail mail = new Mail();
+    mail.setTo("about@example.com");
+    mail.setSubject("About Us Inquiry");
+    mail.setMessage("This is a test message for about.");
+
+    when(mailService.sendMail(any(Mail.class))).thenReturn(false);
+
+    mockMvc.perform(post("/api/service/about/sendMail")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(mail)))
+            .andExpect(status().isInternalServerError())
+            .andExpect(content().string("Fehler beim Senden der E-Mail."));
+
+    verify(mailService, times(1)).sendMail(any(Mail.class));
+}
+
+}

@@ -45,7 +45,7 @@ public class SchuheControllerTestIntegration {
     @Test
     void testAssignSchuhe() throws Exception {
         // Schuhe erstellen und speichern
-        Schuhe schuhe = new Schuhe("NIKE", 100.0, SchuheType.FRAUENSCHUH, "42", "Schwarz", "Hochwertige Laufschuhe", "Vermieter123");
+        Schuhe schuhe = new Schuhe("NIKE", 100.0, SchuheType.DAMENSCHUH, "42", "Schwarz", "Hochwertige Laufschuhe", "Vermieter123");
         schuheRepository.save(schuhe);
 
         // DTO für die Anfrage
@@ -65,7 +65,7 @@ public class SchuheControllerTestIntegration {
     @Test   
     void testAvailableSchuhe() throws Exception {
         // Schuhe erstellen und speichern
-        Schuhe schuhe = new Schuhe("Adidas", 80.0, SchuheType.MAENNERSCHUH, "41", "Weiß", "Bequeme Freizeitschuhe", "Vermieter456");
+        Schuhe schuhe = new Schuhe("Adidas", 80.0, SchuheType.HERRENSCHUH, "41", "Weiß", "Bequeme Freizeitschuhe", "Vermieter456");
         schuheRepository.save(schuhe);
 
         AvailabeSchuheDTO availableDTO = new AvailabeSchuheDTO();
@@ -83,7 +83,7 @@ public class SchuheControllerTestIntegration {
     @Test
     void testMietSchuhe() throws Exception {
         // Schuhe erstellen und speichern
-        Schuhe schuhe = new Schuhe("Puma", 70.0, SchuheType.FRAUENSCHUH, "43", "Blau", "Robuste Trainingsschuhe", "Vermieter789");
+        Schuhe schuhe = new Schuhe("Puma", 70.0, SchuheType.HERRENSCHUH, "43", "Blau", "Robuste Trainingsschuhe", "Vermieter789");
         schuheRepository.save(schuhe);
 
         // Setze den Mietpreis direkt auf Schuhe
