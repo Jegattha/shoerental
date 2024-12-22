@@ -426,4 +426,4 @@ function getBildpfad(schuhe) {
   }
 
   
-</style>
+</style>    
