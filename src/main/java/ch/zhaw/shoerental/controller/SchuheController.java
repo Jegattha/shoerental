@@ -141,5 +141,5 @@ public class SchuheController {
             return ResponseEntity.status(HttpStatus.OK).body("DELETED");
             }
 
-        }
+        }     
 
